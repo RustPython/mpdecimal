@@ -1,0 +1,55 @@
+$ python3 -I c2rust/merge.py c2rust/out/linux-x86_64-uint128/mpdec c2rust/out/linux-i686-ansi32/mpdec c2rust/work/merged/plain
+basearith.rs: items {'same': 24, 'differ': 13, 'only_a': 4, 'only_b': 3}, extern {'same': 9, 'differ': 0, 'only_a': 1, 'only_b': 0}
+constants.rs: items {'same': 4, 'differ': 9, 'only_a': 2, 'only_b': 3}, extern {'same': 0, 'differ': 0, 'only_a': 0, 'only_b': 0}
+context.rs: items {'same': 56, 'differ': 6, 'only_a': 1, 'only_b': 1}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+convolute.rs: items {'same': 6, 'differ': 3, 'only_a': 6, 'only_b': 6}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+crt.rs: items {'same': 15, 'differ': 5, 'only_a': 2, 'only_b': 3}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+difradix2.rs: items {'same': 9, 'differ': 3, 'only_a': 5, 'only_b': 4}, extern {'same': 2, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fnt.rs: items {'same': 5, 'differ': 3, 'only_a': 1, 'only_b': 1}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fourstep.rs: items {'same': 5, 'differ': 4, 'only_a': 6, 'only_b': 6}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+io.rs: items {'same': 73, 'differ': 23, 'only_a': 4, 'only_b': 3}, extern {'same': 38, 'differ': 0, 'only_a': 1, 'only_b': 1}
+mpalloc.rs: items {'same': 28, 'differ': 5, 'only_a': 2, 'only_b': 2}, extern {'same': 11, 'differ': 0, 'only_a': 0, 'only_b': 0}
+mpdecimal.rs: items {'same': 304, 'differ': 91, 'only_a': 3, 'only_b': 14}, extern {'same': 43, 'differ': 0, 'only_a': 1, 'only_b': 0}
+mpsignal.rs: items {'same': 113, 'differ': 2, 'only_a': 2, 'only_b': 0}, extern {'same': 104, 'differ': 0, 'only_a': 2, 'only_b': 0}
+numbertheory.rs: items {'same': 11, 'differ': 4, 'only_a': 4, 'only_b': 4}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+sixstep.rs: items {'same': 7, 'differ': 4, 'only_a': 6, 'only_b': 6}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+transpose.rs: items {'same': 19, 'differ': 3, 'only_a': 1, 'only_b': 2}, extern {'same': 9, 'differ': 0, 'only_a': 0, 'only_b': 0}
+total: {'same': 935, 'differ': 178, 'only_a': 54, 'only_b': 59}
+$ python3 -I c2rust/merge.py c2rust/out/linux-x86_64-uint128-hooks/mpdec c2rust/out/linux-i686-ansi32-hooks/mpdec c2rust/work/merged/hooks
+basearith.rs: items {'same': 24, 'differ': 13, 'only_a': 4, 'only_b': 3}, extern {'same': 9, 'differ': 0, 'only_a': 1, 'only_b': 0}
+constants.rs: items {'same': 4, 'differ': 9, 'only_a': 2, 'only_b': 3}, extern {'same': 0, 'differ': 0, 'only_a': 0, 'only_b': 0}
+context.rs: items {'same': 56, 'differ': 6, 'only_a': 1, 'only_b': 1}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+convolute.rs: items {'same': 6, 'differ': 3, 'only_a': 6, 'only_b': 6}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+crt.rs: items {'same': 15, 'differ': 5, 'only_a': 2, 'only_b': 3}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+difradix2.rs: items {'same': 9, 'differ': 3, 'only_a': 5, 'only_b': 4}, extern {'same': 2, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fnt.rs: items {'same': 5, 'differ': 3, 'only_a': 1, 'only_b': 1}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fourstep.rs: items {'same': 5, 'differ': 4, 'only_a': 6, 'only_b': 6}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+io.rs: items {'same': 73, 'differ': 23, 'only_a': 4, 'only_b': 3}, extern {'same': 38, 'differ': 0, 'only_a': 1, 'only_b': 1}
+mpalloc.rs: items {'same': 28, 'differ': 5, 'only_a': 2, 'only_b': 2}, extern {'same': 11, 'differ': 0, 'only_a': 0, 'only_b': 0}
+mpdecimal.rs: items {'same': 318, 'differ': 91, 'only_a': 3, 'only_b': 14}, extern {'same': 43, 'differ': 0, 'only_a': 1, 'only_b': 0}
+mpsignal.rs: items {'same': 113, 'differ': 2, 'only_a': 2, 'only_b': 0}, extern {'same': 104, 'differ': 0, 'only_a': 2, 'only_b': 0}
+numbertheory.rs: items {'same': 11, 'differ': 4, 'only_a': 4, 'only_b': 4}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+sixstep.rs: items {'same': 7, 'differ': 4, 'only_a': 6, 'only_b': 6}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+transpose.rs: items {'same': 19, 'differ': 3, 'only_a': 1, 'only_b': 2}, extern {'same': 9, 'differ': 0, 'only_a': 0, 'only_b': 0}
+total: {'same': 949, 'differ': 178, 'only_a': 54, 'only_b': 59}
+$ python3 -I c2rust/merge.py --feature test-hooks c2rust/work/merged/plain c2rust/work/merged/hooks c2rust/work/merged/mpdec
+basearith.rs: items {'same': 57, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 10, 'differ': 0, 'only_a': 0, 'only_b': 0}
+constants.rs: items {'same': 27, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 0, 'differ': 0, 'only_a': 0, 'only_b': 0}
+context.rs: items {'same': 70, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+convolute.rs: items {'same': 24, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+crt.rs: items {'same': 30, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+difradix2.rs: items {'same': 24, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 2, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fnt.rs: items {'same': 13, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+fourstep.rs: items {'same': 25, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 6, 'differ': 0, 'only_a': 0, 'only_b': 0}
+io.rs: items {'same': 126, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 40, 'differ': 0, 'only_a': 0, 'only_b': 0}
+mpalloc.rs: items {'same': 42, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 11, 'differ': 0, 'only_a': 0, 'only_b': 0}
+mpdecimal.rs: items {'same': 491, 'differ': 12, 'only_a': 0, 'only_b': 14}, extern {'same': 44, 'differ': 0, 'only_a': 0, 'only_b': 0}
+mpsignal.rs: items {'same': 119, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 106, 'differ': 0, 'only_a': 0, 'only_b': 0}
+numbertheory.rs: items {'same': 27, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 4, 'differ': 0, 'only_a': 0, 'only_b': 0}
+sixstep.rs: items {'same': 27, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 7, 'differ': 0, 'only_a': 0, 'only_b': 0}
+transpose.rs: items {'same': 28, 'differ': 0, 'only_a': 0, 'only_b': 0}, extern {'same': 9, 'differ': 0, 'only_a': 0, 'only_b': 0}
+total: {'same': 1392, 'differ': 12, 'only_a': 0, 'only_b': 14}
+$ python3 -I c2rust/dedupe.py c2rust/work/merged/mpdec
+common: 103 items (394 copies removed), extern declarations replaced by use: 228
+$ python3 -I c2rust/install.py c2rust/work/merged/mpdec
+installed 20 files

@@ -3,3 +3,8 @@
 /testit-2.5.1/libmpdec/tests/testdata/
 # Downloaded and patched by getdn.sh
 /testit-2.5.1/libmpdec/tests/decNumber/
+# Prepared c2rust input (c2rust/prepare.py)
+/c2rust/work/
+/c2rust/out/*/mpdec/Cargo.lock
+# Root crate (c2rust/install.py)
+/target/

@@ -1,0 +1,31 @@
+# x86_64 Linux environment for testing (not for translation), run under
+# Rosetta 2 on Apple Silicon: Linux x86_64 test binaries run natively, and
+# Windows x86_64 test binaries (MinGW-w64) under Wine.
+#
+# Build:  container build --arch amd64 -t mpdecimal-amd64 -f c2rust/Containerfile.amd64 c2rust
+# Run:    c2rust/in-container.sh with CONTAINER_IMAGE=mpdecimal-amd64
+#         CONTAINER_ARCH=amd64
+
+FROM ubuntu:24.04
+
+ARG RUST_VERSION=1.99.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential ca-certificates curl libgmp-dev patch perl python3 \
+        gcc-mingw-w64-x86-64 wine64 \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV RUSTUP_HOME=/opt/rustup CARGO_HOME=/opt/cargo PATH=/opt/cargo/bin:$PATH
+
+RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+        --default-toolchain ${RUST_VERSION} \
+        --target x86_64-pc-windows-gnu --target i686-pc-windows-gnu \
+    && rm -rf /opt/cargo/registry /opt/cargo/git
+
+# Wine keeps its prefix in $HOME
+ENV HOME=/tmp/home WINEDEBUG=-all
+RUN mkdir -p /tmp/home && chmod 1777 /tmp/home
+
+WORKDIR /src

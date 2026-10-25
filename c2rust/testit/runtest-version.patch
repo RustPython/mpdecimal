@@ -1,0 +1,41 @@
+--- a/runtest.c
++++ b/runtest.c
+@@ -5688,28 +5688,28 @@
+     }
+ 
+     /* Test version */
+-    if (strcmp(mpd_version(), "2.5.1") != 0) {
+-        fputs("runtest: error: mpd_version() != 2.5.1\n", stderr);
++    if (strcmp(mpd_version(), "4.0.1") != 0) {
++        fputs("runtest: error: mpd_version() != 4.0.1\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+-    if (strcmp(MPD_VERSION, "2.5.1") != 0) {
+-        fputs("runtest: error: MPD_VERSION != 2.5.1\n", stderr);
++    if (strcmp(MPD_VERSION, "4.0.1") != 0) {
++        fputs("runtest: error: MPD_VERSION != 4.0.1\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+-    if (MPD_MAJOR_VERSION != 2) {
+-        fputs("runtest: error: MPD_MAJOR_VERSION != 2\n", stderr);
++    if (MPD_MAJOR_VERSION != 4) {
++        fputs("runtest: error: MPD_MAJOR_VERSION != 4\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+-    if (MPD_MINOR_VERSION != 5) {
+-        fputs("runtest: error: MPD_MINOR_VERSION != 5\n", stderr);
++    if (MPD_MINOR_VERSION != 0) {
++        fputs("runtest: error: MPD_MINOR_VERSION != 0\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+     if (MPD_MICRO_VERSION != 1) {
+         fputs("runtest: error: MPD_MICRO_VERSION != 1\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+-    if (MPD_VERSION_HEX != 0x02050100) {
+-        fputs("runtest: error: MPD_VERSION_HEX != 0x02050100\n", stderr);
++    if (MPD_VERSION_HEX != 0x04000100) {
++        fputs("runtest: error: MPD_VERSION_HEX != 0x04000100\n", stderr);
+         exit(EXIT_FAILURE);
+     }
+ 

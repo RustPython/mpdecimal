@@ -1,0 +1,19 @@
+$ python3 -I c2rust/prepare.py --machine ansi32 --test-hooks --workdir c2rust/work/linux-i686-ansi32-hooks -- --target=i686-linux-gnu --sysroot=/usr/i686-linux-gnu
+cc -std=c99 -Dinline= -fmacro-prefix-map=/Users/youknowone/Projects/mpdecimal/c2rust/work/linux-i686-ansi32-hooks/src/= -DCONFIG_32 -DANSI -I/Users/youknowone/Projects/mpdecimal/c2rust/neutral-libc -I/Users/youknowone/Projects/mpdecimal/c2rust/work/linux-i686-ansi32-hooks/include-c2rust --target=i686-linux-gnu --sysroot=/usr/i686-linux-gnu
+$ c2rust transpile --emit-build-files --overwrite-existing -o c2rust/out/linux-i686-ansi32-hooks/mpdec c2rust/work/linux-i686-ansi32-hooks/compile_commands.json
+Transpiling basearith.c
+Transpiling context.c
+Transpiling constants.c
+Transpiling convolute.c
+Transpiling crt.c
+Transpiling mpdecimal.c
+Transpiling mpsignal.c
+Transpiling difradix2.c
+Transpiling fnt.c
+Transpiling fourstep.c
+Transpiling io.c
+Transpiling mpalloc.c
+Transpiling numbertheory.c
+Transpiling sixstep.c
+Transpiling transpose.c
+$ python3 -I c2rust/normalize.py c2rust/out/linux-i686-ansi32-hooks/mpdec CONFIG_32

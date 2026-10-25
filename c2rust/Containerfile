@@ -1,0 +1,72 @@
+# Linux environment for c2rust translation and testing.
+#
+# Build:  container build -t mpdecimal-c2rust -f c2rust/Containerfile c2rust
+#
+# The image is native to the host architecture (aarch64 on Apple Silicon).
+# Other Linux targets are handled by cross-transpiling with a sysroot
+# (/usr/<triple>) and running test binaries under qemu-user: x86_64, i686,
+# s390x (big-endian) and armv7. wasm32-wasip1 test binaries are built with
+# wasi-sdk and run with wasmtime.
+
+FROM ubuntu:24.04
+
+# c2rust 0.22.1 supports LLVM <= 21 (Clang 22 support landed later, #1671)
+ARG LLVM_VERSION=21
+# also builds the generated crates (c2rust/test-short.sh)
+ARG RUST_VERSION=1.99.0
+ARG C2RUST_VERSION=0.22.1
+# c2rust runs rustfmt with this toolchain (its generated rust-toolchain.toml)
+ARG C2RUST_RUSTFMT_TOOLCHAIN=nightly-2023-04-15
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential ca-certificates cmake curl git gnupg libssl-dev \
+        pkg-config python3 unzip wget \
+        gcc-i686-linux-gnu libc6-dev-i386-cross \
+        gcc-x86-64-linux-gnu libc6-dev-amd64-cross \
+        gcc-s390x-linux-gnu libc6-dev-s390x-cross \
+        gcc-arm-linux-gnueabihf libc6-dev-armhf-cross \
+        libgmp-dev patch perl qemu-user xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key \
+        | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble-${LLVM_VERSION} main" \
+        > /etc/apt/sources.list.d/llvm.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
+        clang-${LLVM_VERSION} libclang-${LLVM_VERSION}-dev llvm-${LLVM_VERSION}-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV RUSTUP_HOME=/opt/rustup CARGO_HOME=/opt/cargo PATH=/opt/cargo/bin:/usr/lib/llvm-${LLVM_VERSION}/bin:$PATH
+
+# c2rust formats each translated file with rustfmt of the default toolchain
+RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+        --default-toolchain ${RUST_VERSION} --component rustfmt \
+        --target i686-unknown-linux-gnu --target x86_64-unknown-linux-gnu \
+        --target s390x-unknown-linux-gnu --target armv7-unknown-linux-gnueabihf \
+        --target wasm32-wasip1 \
+    && LLVM_CONFIG_PATH=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
+        cargo install --locked c2rust@${C2RUST_VERSION} \
+    && rustup toolchain install ${C2RUST_RUSTFMT_TOOLCHAIN} --profile minimal \
+        --component rustfmt \
+    && rm -rf /opt/cargo/registry /opt/cargo/git
+
+# wasm32-wasip1: C compiler and sysroot (wasi-sdk), runtime (wasmtime)
+ARG WASI_SDK_VERSION=25
+ARG WASMTIME_VERSION=26.0.0
+RUN case $(uname -m) in \
+        aarch64) sdk=arm64-linux wt=aarch64-linux ;; \
+        x86_64) sdk=x86_64-linux wt=x86_64-linux ;; \
+    esac \
+    && curl -fsSL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_SDK_VERSION}/wasi-sdk-${WASI_SDK_VERSION}.0-$sdk.tar.gz \
+        | tar -xz -C /opt \
+    && mv /opt/wasi-sdk-${WASI_SDK_VERSION}.0-$sdk /opt/wasi-sdk \
+    && curl -fsSL https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-$wt.tar.xz \
+        | tar -xJ -C /opt \
+    && mv /opt/wasmtime-v${WASMTIME_VERSION}-$wt/wasmtime /usr/local/bin/ \
+    && rm -rf /opt/wasmtime-v${WASMTIME_VERSION}-$wt
+
+RUN git config --system --add safe.directory '*'
+
+WORKDIR /src

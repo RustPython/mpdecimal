@@ -1,0 +1,263 @@
+diff -r linux-x86_64-uint128/mpdec/src/basearith.rs windows-aarch64-uint128/mpdec/src/basearith.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<             *dest.offset((m as mpd_uint_t).wrapping_add(q) as isize) = *src.offset(m as isize);
+---
+>             *dest.offset(m.wrapping_add(q as mpd_size_t) as isize) = *src.offset(m as isize);
+@@
+<         while (j as mpd_uint_t) < (slen as mpd_uint_t).wrapping_sub(q) {
+---
+>         while j < slen.wrapping_sub(q as mpd_size_t) {
+diff -r linux-x86_64-uint128/mpdec/src/constants.rs windows-aarch64-uint128/mpdec/src/constants.rs
+@@
+<     2147483648 as u64 as mpd_size_t,
+<     4294967296 as u64 as mpd_size_t,
+<     8589934592 as u64 as mpd_size_t,
+<     17179869184 as u64 as mpd_size_t,
+<     34359738368 as u64 as mpd_size_t,
+<     68719476736 as u64 as mpd_size_t,
+<     137438953472 as u64 as mpd_size_t,
+<     274877906944 as u64 as mpd_size_t,
+<     549755813888 as u64 as mpd_size_t,
+<     1099511627776 as u64 as mpd_size_t,
+<     2199023255552 as u64 as mpd_size_t,
+---
+>     2147483648 as u64,
+>     4294967296 as u64,
+>     8589934592 as u64,
+>     17179869184 as u64,
+>     34359738368 as u64,
+>     68719476736 as u64,
+>     137438953472 as u64,
+>     274877906944 as u64,
+>     549755813888 as u64,
+>     1099511627776 as u64,
+>     2199023255552 as u64,
+@@
+<     8796093022208 as u64 as mpd_size_t,
+<     17592186044416 as u64 as mpd_size_t,
+<     35184372088832 as u64 as mpd_size_t,
+<     70368744177664 as u64 as mpd_size_t,
+<     140737488355328 as u64 as mpd_size_t,
+<     281474976710656 as u64 as mpd_size_t,
+<     562949953421312 as u64 as mpd_size_t,
+<     1125899906842624 as u64 as mpd_size_t,
+<     2251799813685248 as u64 as mpd_size_t,
+<     4503599627370496 as u64 as mpd_size_t,
+<     9007199254740992 as u64 as mpd_size_t,
+<     18014398509481984 as u64 as mpd_size_t,
+<     36028797018963968 as u64 as mpd_size_t,
+<     72057594037927936 as u64 as mpd_size_t,
+<     144115188075855872 as u64 as mpd_size_t,
+<     288230376151711744 as u64 as mpd_size_t,
+<     576460752303423488 as u64 as mpd_size_t,
+<     1152921504606846976 as u64 as mpd_size_t,
+<     2305843009213693952 as u64 as mpd_size_t,
+<     4611686018427387904 as u64 as mpd_size_t,
+<     9223372036854775808 as u64 as mpd_size_t,
+---
+>     8796093022208 as u64,
+>     17592186044416 as u64,
+>     35184372088832 as u64,
+>     70368744177664 as u64,
+>     140737488355328 as u64,
+>     281474976710656 as u64,
+>     562949953421312 as u64,
+>     1125899906842624 as u64,
+>     2251799813685248 as u64,
+>     4503599627370496 as u64,
+>     9007199254740992 as u64,
+>     18014398509481984 as u64,
+>     36028797018963968 as u64,
+>     72057594037927936 as u64,
+>     144115188075855872 as u64,
+>     288230376151711744 as u64,
+>     576460752303423488 as u64,
+>     1152921504606846976 as u64,
+>     2305843009213693952 as u64,
+>     4611686018427387904 as u64,
+>     9223372036854775808 as u64,
+diff -r linux-x86_64-uint128/mpdec/src/context.rs windows-aarch64-uint128/mpdec/src/context.rs
+@@
+<             b"libmpdec/context.c\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\context.c\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<             b"libmpdec/context.c\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\context.c\0" as *const u8 as *const ::core::ffi::c_char,
+diff -r linux-x86_64-uint128/mpdec/src/difradix2.rs windows-aarch64-uint128/mpdec/src/difradix2.rs
+@@
+<     if n as u64 & 0xffffffff as u64 != 0 {
+---
+>     if n & 0xffffffff as mpd_size_t != 0 {
+@@
+<     if n as u64 & 0xffff as u64 != 0 {
+---
+>     if n & 0xffff as mpd_size_t != 0 {
+@@
+<     if n as u64 & 0xff as u64 != 0 {
+---
+>     if n & 0xff as mpd_size_t != 0 {
+@@
+<     if n as u64 & 0xf as u64 != 0 {
+---
+>     if n & 0xf as mpd_size_t != 0 {
+@@
+<     if n as u64 & 0x3 as u64 != 0 {
+---
+>     if n & 0x3 as mpd_size_t != 0 {
+@@
+<     if n as u64 & 0x1 as u64 != 0 {
+---
+>     if n & 0x1 as mpd_size_t != 0 {
+@@
+<             w = *wtable.offset((j as mpd_uint_t).wrapping_mul(wstep) as isize);
+---
+>             w = *wtable.offset(j.wrapping_mul(wstep as mpd_size_t) as isize);
+diff -r linux-x86_64-uint128/mpdec/src/fnt.rs windows-aarch64-uint128/mpdec/src/fnt.rs
+@@
+<     if n as u64 <= (3 as u64).wrapping_mul(4294967296 as u64) {
+---
+>     if n <= (3 as mpd_size_t).wrapping_mul(4294967296 as mpd_size_t) {
+@@
+<     if n as u64 <= (3 as u64).wrapping_mul(4294967296 as u64) {
+---
+>     if n <= (3 as mpd_size_t).wrapping_mul(4294967296 as mpd_size_t) {
+diff -r linux-x86_64-uint128/mpdec/src/fourstep.rs windows-aarch64-uint128/mpdec/src/fourstep.rs
+@@
+<     if n as u64 <= (3 as u64).wrapping_mul(4294967296 as u64) {
+---
+>     if n <= (3 as mpd_size_t).wrapping_mul(4294967296 as mpd_size_t) {
+@@
+<     if n as u64 <= (3 as u64).wrapping_mul(4294967296 as u64) {
+---
+>     if n <= (3 as mpd_size_t).wrapping_mul(4294967296 as mpd_size_t) {
+diff -r linux-x86_64-uint128/mpdec/src/io.rs windows-aarch64-uint128/mpdec/src/io.rs
+@@
+<                         if fracdigits as u64 > MPD_MAX_PREC as u64 {
+---
+>                         if fracdigits > MPD_MAX_PREC as size_t {
+@@
+<                             if digits as u64 > MPD_MAX_PREC as u64 {
+---
+>                             if digits > MPD_MAX_PREC as size_t {
+@@
+<             rpad = (add_chars as u64).wrapping_sub(lpad as u64) as size_t;
+---
+>             rpad = (add_chars as size_t).wrapping_sub(lpad);
+diff -r linux-x86_64-uint128/mpdec/src/mpalloc.rs windows-aarch64-uint128/mpdec/src/mpalloc.rs
+@@
+<         ((*result).alloc as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64)
+<             as size_t,
+---
+>         ((*result).alloc as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+@@
+<         ((*result).alloc as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64)
+<             as size_t,
+---
+>         ((*result).alloc as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+diff -r linux-x86_64-uint128/mpdec/src/mpdecimal.rs windows-aarch64-uint128/mpdec/src/mpdecimal.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<         ((*a).len as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64) as size_t,
+---
+>         ((*a).len as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+@@
+<         ((*a).len as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64) as size_t,
+---
+>         ((*a).len as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+@@
+<         ((*a).len as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64) as size_t,
+---
+>         ((*a).len as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+@@
+<         ((*a).len as u64).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as u64) as size_t,
+---
+>         ((*a).len as size_t).wrapping_mul(::core::mem::size_of::<mpd_uint_t>() as size_t),
+@@
+<             if *big.offset((m as mpd_uint_t).wrapping_add(q) as isize) != *small.offset(m as isize)
+<             {
+<                 if *big.offset((m as mpd_uint_t).wrapping_add(q) as isize)
+<                     < *small.offset(m as isize)
+---
+>             if *big.offset(m.wrapping_add(q as mpd_size_t) as isize) != *small.offset(m as isize) {
+>                 if *big.offset(m.wrapping_add(q as mpd_size_t) as isize) < *small.offset(m as isize)
+@@
+<     } else if rsize as u64 <= MPD_MAXTRANSFORM_2N {
+---
+>     } else if rsize <= MPD_MAXTRANSFORM_2N as mpd_size_t {
+@@
+<     } else if rsize as u64
+<         <= MPD_MAXTRANSFORM_2N.wrapping_add(MPD_MAXTRANSFORM_2N.wrapping_div(2 as u64))
+---
+>     } else if rsize
+>         <= (MPD_MAXTRANSFORM_2N as mpd_size_t)
+>             .wrapping_add((MPD_MAXTRANSFORM_2N as mpd_size_t).wrapping_div(2 as mpd_size_t))
+@@
+<         return MPD_MAXTRANSFORM_2N.wrapping_add(MPD_MAXTRANSFORM_2N.wrapping_div(2 as u64))
+<             as mpd_size_t;
+<     } else if rsize as u64 <= (3 as u64).wrapping_mul(MPD_MAXTRANSFORM_2N) {
+<         return (3 as u64).wrapping_mul(MPD_MAXTRANSFORM_2N) as mpd_size_t;
+---
+>         return (MPD_MAXTRANSFORM_2N as mpd_size_t)
+>             .wrapping_add((MPD_MAXTRANSFORM_2N as mpd_size_t).wrapping_div(2 as mpd_size_t));
+>     } else if rsize <= (3 as mpd_size_t).wrapping_mul(MPD_MAXTRANSFORM_2N as mpd_size_t) {
+>         return (3 as mpd_size_t).wrapping_mul(MPD_MAXTRANSFORM_2N as mpd_size_t);
+@@
+<     if la as u64 <= (3 as u64).wrapping_mul((4294967296 as u64).wrapping_div(2 as u64))
+---
+>     if la
+>         <= (3 as mpd_size_t).wrapping_mul((4294967296 as mpd_size_t).wrapping_div(2 as mpd_size_t))
+@@
+<     if la as u64 <= (3 as u64).wrapping_mul(MPD_MAXTRANSFORM_2N.wrapping_div(2 as u64)) {
+---
+>     if la
+>         <= (3 as mpd_size_t)
+>             .wrapping_mul((MPD_MAXTRANSFORM_2N as mpd_size_t).wrapping_div(2 as mpd_size_t))
+>     {
+@@
+<         (3 as u64).wrapping_mul(MPD_MAXTRANSFORM_2N.wrapping_div(2 as u64)) as mpd_size_t,
+---
+>         (3 as mpd_size_t)
+>             .wrapping_mul((MPD_MAXTRANSFORM_2N as mpd_size_t).wrapping_div(2 as mpd_size_t)),
+@@
+<         } else if rsize as u64 <= (3 as u64).wrapping_mul(MPD_MAXTRANSFORM_2N) {
+---
+>         } else if rsize <= (3 as mpd_size_t).wrapping_mul(MPD_MAXTRANSFORM_2N as mpd_size_t) {
+@@
+<                                     b"libmpdec/mpdecimal.c\0" as *const u8
+---
+>                                     b"libmpdec\\mpdecimal.c\0" as *const u8
+@@
+<     if digits as u64 > 2711437152599294 as u64 {
+---
+>     if digits > 2711437152599294 as size_t {
+@@
+<     if srclen as u64 > (1 as u64) << 53 as ::core::ffi::c_int {
+---
+>     if srclen > (1 as size_t) << 53 as ::core::ffi::c_int {
+diff -r linux-x86_64-uint128/mpdec/src/sixstep.rs windows-aarch64-uint128/mpdec/src/sixstep.rs
+@@
+<     if n as u64 <= 4294967296 as u64 {
+---
+>     if n <= 4294967296 as mpd_size_t {
+@@
+<     if n as u64 <= 4294967296 as u64 {
+---
+>     if n <= 4294967296 as mpd_size_t {
+diff -r linux-x86_64-uint128/mpdec/src/transpose.rs windows-aarch64-uint128/mpdec/src/transpose.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,

@@ -1,0 +1,32 @@
+diff -r linux-i686-ansi32/mpdec/src/basearith.rs windows-i686-ansi32/mpdec/src/basearith.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+diff -r linux-i686-ansi32/mpdec/src/context.rs windows-i686-ansi32/mpdec/src/context.rs
+@@
+<             b"libmpdec/context.c\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\context.c\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<             b"libmpdec/context.c\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\context.c\0" as *const u8 as *const ::core::ffi::c_char,
+diff -r linux-i686-ansi32/mpdec/src/mpdecimal.rs windows-i686-ansi32/mpdec/src/mpdecimal.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+@@
+<                                     b"libmpdec/mpdecimal.c\0" as *const u8
+---
+>                                     b"libmpdec\\mpdecimal.c\0" as *const u8
+diff -r linux-i686-ansi32/mpdec/src/transpose.rs windows-i686-ansi32/mpdec/src/transpose.rs
+@@
+<             b"libmpdec/typearith.h\0" as *const u8 as *const ::core::ffi::c_char,
+---
+>             b"libmpdec\\typearith.h\0" as *const u8 as *const ::core::ffi::c_char,

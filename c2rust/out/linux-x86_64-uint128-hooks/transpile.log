@@ -1,0 +1,19 @@
+$ python3 -I c2rust/prepare.py --machine uint128 --test-hooks --workdir c2rust/work/linux-x86_64-uint128-hooks -- --target=x86_64-linux-gnu --sysroot=/usr/x86_64-linux-gnu
+cc -std=c99 -Dinline= -fmacro-prefix-map=/Users/youknowone/Projects/mpdecimal/c2rust/work/linux-x86_64-uint128-hooks/src/= -DCONFIG_64 -DANSI -DHAVE_UINT128_T -I/Users/youknowone/Projects/mpdecimal/c2rust/neutral-libc -I/Users/youknowone/Projects/mpdecimal/c2rust/work/linux-x86_64-uint128-hooks/include-c2rust --target=x86_64-linux-gnu --sysroot=/usr/x86_64-linux-gnu
+$ c2rust transpile --emit-build-files --overwrite-existing -o c2rust/out/linux-x86_64-uint128-hooks/mpdec c2rust/work/linux-x86_64-uint128-hooks/compile_commands.json
+Transpiling basearith.c
+Transpiling context.c
+Transpiling constants.c
+Transpiling convolute.c
+Transpiling crt.c
+Transpiling mpdecimal.c
+Transpiling mpsignal.c
+Transpiling difradix2.c
+Transpiling fnt.c
+Transpiling fourstep.c
+Transpiling io.c
+Transpiling mpalloc.c
+Transpiling numbertheory.c
+Transpiling sixstep.c
+Transpiling transpose.c
+$ python3 -I c2rust/normalize.py c2rust/out/linux-x86_64-uint128-hooks/mpdec CONFIG_64

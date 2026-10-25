@@ -1,0 +1,14 @@
+diff -r linux-i686-ansi32/mpdec/src/io.rs linux-armv7-ansi32/mpdec/src/io.rs
+@@
+< pub const SCHAR_MAX: ::core::ffi::c_int = 127 as ::core::ffi::c_int;
+---
+> pub const UCHAR_MAX: ::core::ffi::c_int = 255 as ::core::ffi::c_int;
+@@
+<     let mut cp: *const ::core::ffi::c_char = (*spec).grouping;
+<     while *cp as ::core::ffi::c_int != '\0' as i32 {
+<         let fresh0 = cp;
+<         cp = cp.offset(1);
+<         if (*fresh0 as ::core::ffi::c_int) < 0 as ::core::ffi::c_int {
+<             return -(1 as ::core::ffi::c_int);
+<         }
+<     }
