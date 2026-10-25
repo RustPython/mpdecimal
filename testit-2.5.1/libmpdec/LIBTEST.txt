@@ -1,0 +1,169 @@
+
+# ======================================================================
+#                          Unix: build Python
+# ======================================================================
+
+# First, do the regular Python build:
+cd ../../
+./configure
+make
+cd Modules/_decimal
+
+
+# ======================================================================
+#                     Unix: short library tests
+# ======================================================================
+
+./configure
+make # gmake
+make check
+
+
+# ======================================================================
+#                     Unix: long library tests
+# ======================================================================
+
+# Some of these tests require libgmp-dev.
+./configure
+make extended # gmake
+cd tests && ./runalltests.sh
+
+
+# ======================================================================
+#                     Unix: tests against decNumber
+# ======================================================================
+
+# It is assumed that libmpdec has been built already.
+
+# Get decNumber and apply required patch:
+./getdn.sh
+make deccheck # gmake
+
+# Run the tests:
+#   --short:     random tests
+#   --exit:      exit on error (by default the error is just printed).
+#   --minalloc:  iterate through all possible values for MPD_MINALLOC.
+./deccheck [--short|--minalloc|--exit]
+
+
+# ======================================================================
+#                     Unix: all configurations
+# ======================================================================
+
+#
+# Here is the list of possible configurations:
+#
+#    1. x64         - 64-bit OS with x86_64 processor (AMD, Intel)
+#
+#    2. uint128     - 64-bit OS, compiler has __uint128_t (should be
+#                     the case for gcc)
+#
+#    3. ansi64      - 64-bit OS, double width multiplication and
+#                     division in ANSI C.
+#
+#    3. ppro        - 32-bit OS with any x86 processor that has at
+#                     least PentiumPro capabilities
+#
+#    5. ansi32      - 32-bit or 64-bit OS, produces 32-bit library
+#
+#    6. ansi-legacy - 32-bit OS, compiler without uint64_t
+#
+#  TESTING ONLY:
+#
+#    7. full_coverage - 64bit OS, produces 64-bit library,
+#                       using CONFIG_32.
+#
+ 
+# On amd64 with multilib it is possible to run all configs. Otherwise,
+# edit runallconfigs.sh and delete configs as appropriate.
+cd tests && ./runallconfigs.sh
+
+# With Valgrind:
+cd tests && ./runallconfigs.sh --valgrind
+
+
+# ======================================================================
+#                       Unix: code coverage tests
+# ======================================================================
+
+# These tests require gcc/gcov and take quite long. To achieve 100%
+# coverage of the various multiplication functions, 4-8GB of RAM is
+# required for CONFIG_32, 1TB for CONFIG_64.
+#
+# So, realistically it is only possible to get 100% coverage using
+# ./configure MACHINE=full_coverage on a 64-bit machine with 8GB of
+# memory.
+#
+# !!! MACHINE=full_coverage is for testing only and does not work
+#     for pycoverage.
+
+# Library coverage:
+./configure
+make libcoverage # gmake
+python tests/covreport.py
+make distclean
+
+# 100% library coverage (64-bit OS):
+./configure MACHINE=full_coverage
+patch < tests/fullcov_header.patch
+make libcoverage # gmake
+python tests/covreport.py
+make distclean
+patch -R < tests/fullcov_header.patch
+
+# Module coverage:
+./configure
+make pycoverage # gmake
+python tests/covreport.py
+make distclean
+
+# lib/pycoverage:
+./configure
+make coverage # gmake
+python tests/covreport.py
+make distclean
+
+
+# ======================================================================
+#                           64-bit Windows
+# ======================================================================
+
+copy Makefile.vc Makefile
+
+# Find the path to vcvarsamd64.bat (or vcvars64.bat) and execute it. Example:
+"C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\amd64\vcvarsamd64.bat"
+
+# Build static library:
+nmake MACHINE=x64
+# Short tests
+nmake MACHINE=x64 check
+# Long tests
+make MACHINE=x64 extended
+cd tests && runalltests.bat
+# Long tests requires gmp, edit paths to gmp libs in Makefile:
+make MACHINE=x64 extended_gmp
+cd tests && runalltests.bat
+
+
+# ======================================================================
+#                           32-bit Windows
+# ======================================================================
+
+copy Makefile.vc Makefile
+
+# Find the path to vcvars32.bat and execute it. Example:
+"C:\Program Files\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
+
+# Build static library:
+nmake MACHINE=ppro
+# Short tests
+nmake MACHINE=ppro check
+# Long tests
+make MACHINE=ppro extended
+cd tests && runalltests.bat
+# Long tests requires gmp, edit paths to gmp libs in Makefile:
+make MACHINE=x64 extended_gmp
+cd tests && runalltests.bat
+
+
+

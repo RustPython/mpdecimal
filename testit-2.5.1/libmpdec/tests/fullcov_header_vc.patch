@@ -1,0 +1,28 @@
+--- a/libmpdec/mpdecimal.h	2020-09-02 15:44:39.001650662 +0200
++++ b/libmpdec/mpdecimal.h	2020-09-02 22:41:02.706625490 +0200
+@@ -109,8 +109,9 @@
+ typedef uint64_t mpd_uuint_t; /* double width unsigned mod type */
+ #endif
+ 
+-#define MPD_SIZE_MAX SIZE_MAX
+-typedef size_t mpd_size_t; /* unsigned size type */
++/* enable CONFIG_32+ANSI on 64-bit platforms without resorting to -m32 */
++#define MPD_SIZE_MAX UINT32_MAX
++typedef uint32_t mpd_size_t; /* unsigned size type */
+ 
+ /* type for dec->len, dec->exp, ctx->prec */
+ #define MPD_SSIZE_MAX INT32_MAX
+@@ -138,8 +139,11 @@
+ #define MPD_IEEE_CONTEXT_MAX_BITS 256 /* 16*(log2(MPD_MAX_EMAX / 3)-3) */
+
+ 
+-#if MPD_SIZE_MAX != MPD_UINT_MAX
+-  #error "unsupported platform: need mpd_size_t == mpd_uint_t"
++#if SIZE_MAX < MPD_SIZE_MAX
++  #error "unsupported platform: need size_t >= mpd_size_t"
++#endif
++#ifndef TEST_COVERAGE
++  #error "Define TEST_COVERAGE or revert tests/fullcov_header.patch."
+ #endif
+ 
+ 

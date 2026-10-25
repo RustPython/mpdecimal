@@ -1,0 +1,198 @@
+
+# ==============================================================================
+#                          Unix Makefile for libmpdec
+# ==============================================================================
+
+PACKAGE_TARNAME = @PACKAGE_TARNAME@
+LIBSTATIC = @LIBSTATIC@
+LIBSONAME = @LIBSONAME@
+LIBSHARED = @LIBSHARED@
+
+CC = @CC@
+LD = @LD@
+AR = @AR@
+GCOV ?= gcov
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+includedir = @includedir@
+libdir = @libdir@
+datarootdir = @datarootdir@
+docdir = @docdir@
+
+MPD_HEADER = @MPD_HEADER@
+MPD_WARN = @MPD_WARN@
+MPD_CONFIG = @MPD_CONFIG@
+MPD_OPT = @MPD_OPT@
+
+MPD_CCOV = @MPD_CCOV@
+MPD_LDCOV = @MPD_LDCOV@
+MPD_PGEN = @MPD_PGEN@
+MPD_PUSE = @MPD_PUSE@
+MPD_PREC = @MPD_PREC@
+MPD_DPREC = @MPD_DPREC@
+
+
+CONFIGURE_CFLAGS = @CONFIGURE_CFLAGS@
+MPD_CFLAGS = $(strip $(CONFIGURE_CFLAGS) $(CFLAGS))
+
+CONFIGURE_LDFLAGS = @CONFIGURE_LDFLAGS@
+MPD_LDFLAGS = $(strip $(CONFIGURE_LDFLAGS) $(LDFLAGS))
+
+
+ifeq ($(MAKECMDGOALS), coverage)
+  MPD_CFLAGS += $(MPD_CCOV)
+  MPD_LDFLAGS += $(MPD_LDCOV)
+endif
+
+ifeq ($(MAKECMDGOALS), profile_gen)
+  MPD_CFLAGS += $(MPD_PGEN)
+  MPD_LDFLAGS += $(MPD_PGEN)
+endif
+ifeq ($(MAKECMDGOALS), profile_use)
+  MPD_CFLAGS += $(MPD_PUSE)
+  MPD_LDFLAGS += $(MPD_PUSE)
+endif
+
+
+default: $(LIBSTATIC)
+
+
+OBJS := basearith.o context.o constants.o convolute.o crt.o mpdecimal.o \
+        mpsignal.o difradix2.o fnt.o fourstep.o io.o mpalloc.o numbertheory.o \
+        sixstep.o transpose.o
+
+$(LIBSTATIC): Makefile $(OBJS)
+	$(AR) rc $(LIBSTATIC) $(OBJS)
+	ranlib $(LIBSTATIC)
+
+$(LIBSHARED): Makefile $(OBJS)
+	$(LD) $(LDFLAGS) -shared -Wl,-soname,$(LIBSONAME) -o $(LIBSHARED) $(OBJS) -lm
+
+
+basearith.o:\
+Makefile basearith.c mpdecimal.h constants.h mpalloc.h \
+typearith.h basearith.h
+	$(CC) $(MPD_CFLAGS) -c basearith.c
+
+constants.o:\
+Makefile constants.c mpdecimal.h constants.h
+	$(CC) $(MPD_CFLAGS) -c constants.c
+
+context.o:\
+Makefile context.c mpdecimal.h
+	$(CC) $(MPD_CFLAGS) -c context.c
+
+convolute.o:\
+Makefile convolute.c mpdecimal.h bits.h constants.h fnt.h fourstep.h \
+numbertheory.h sixstep.h umodarith.h typearith.h convolute.h
+	$(CC) $(MPD_CFLAGS) -c convolute.c
+
+crt.o:\
+Makefile crt.c mpdecimal.h numbertheory.h constants.h umodarith.h \
+typearith.h crt.h
+	$(CC) $(MPD_CFLAGS) -c crt.c
+
+difradix2.o:\
+Makefile difradix2.c mpdecimal.h bits.h numbertheory.h constants.h \
+umodarith.h typearith.h difradix2.h
+	$(CC) $(MPD_CFLAGS) -c difradix2.c
+
+fnt.o:\
+Makefile fnt.c mpdecimal.h bits.h difradix2.h numbertheory.h \
+constants.h fnt.h
+	$(CC) $(MPD_CFLAGS) -c fnt.c
+
+fourstep.o:\
+Makefile fourstep.c mpdecimal.h numbertheory.h constants.h sixstep.h \
+transpose.h umodarith.h typearith.h fourstep.h
+	$(CC) $(MPD_CFLAGS) -c fourstep.c
+
+io.o:\
+Makefile io.c mpdecimal.h bits.h constants.h mpalloc.h typearith.h io.h
+	$(CC) $(MPD_CFLAGS) -c io.c
+
+mpalloc.o:\
+Makefile mpalloc.c mpdecimal.h typearith.h mpalloc.h
+	$(CC) $(MPD_CFLAGS) -c mpalloc.c
+
+mpdecimal.o:\
+Makefile mpdecimal.c mpdecimal.h basearith.h typearith.h bits.h \
+convolute.h crt.h mpalloc.h umodarith.h constants.h
+	$(CC) $(MPD_CFLAGS) -c mpdecimal.c
+
+mpsignal.o:\
+Makefile mpdecimal.c mpdecimal.h
+	$(CC) $(MPD_CFLAGS) -c mpsignal.c
+
+numbertheory.o:\
+Makefile numbertheory.c mpdecimal.h bits.h umodarith.h constants.h \
+typearith.h numbertheory.h
+	$(CC) $(MPD_CFLAGS) -c numbertheory.c
+
+sixstep.o:\
+Makefile sixstep.c mpdecimal.h bits.h difradix2.h numbertheory.h \
+constants.h transpose.h umodarith.h typearith.h sixstep.h
+	$(CC) $(MPD_CFLAGS) -c sixstep.c
+
+transpose.o:\
+Makefile transpose.c mpdecimal.h bits.h constants.h typearith.h \
+transpose.h
+	$(CC) $(MPD_CFLAGS) -c transpose.c
+
+
+check: $(LIBSTATIC) FORCE
+	cd tests && $(MAKE) && ./runshort.sh
+
+extended:\
+Makefile $(LIBSTATIC)
+	cd tests && $(MAKE) extended
+
+build_coverage: clean $(LIBSTATIC)
+	cd tests && $(MAKE) coverage
+
+coverage: build_coverage
+	@echo ""
+	@cd tests && ./runshort.sh && ./cov && ./test_transpose && ./fntcov
+	@for file in *.c; do $(GCOV) -l "$$file" > /dev/null 2>&1; done
+	@echo ""
+	@./tests/covreport.py
+
+
+FORCE:
+
+bench: FORCE $(LIBSTATIC)
+	$(CC) -Wno-unused-but-set-variable $(MPD_CFLAGS) -o bench bench.c $(LIBSTATIC) -lm
+	$(CC) -Wno-unused-but-set-variable $(MPD_CFLAGS) -o bench_full bench_full.c $(LIBSTATIC) -lm
+
+profile_gen: clean bench
+	./bench $(MPD_PREC) 1000000
+	./bench $(MPD_DPREC) 1000000
+	rm -f *.o *.gch $(LIBSTATIC) $(LIBSHARED) bench runtest
+
+profile_use: bench
+	./bench $(MPD_PREC) 1000000
+	./bench $(MPD_DPREC) 1000000
+
+profile:
+	$(MAKE) profile_gen
+	$(MAKE) profile_use
+
+install: FORCE
+	echo ""
+	echo "Warning: mpdecimal-testit is a test suite and is not intended"
+	echo "for production use"
+	echo ""
+
+clean: FORCE
+	rm -f *.o *.so *.gch *.gcda *.gcno *.gcov *.dyn *.dpi *.lock \
+        $(LIBSTATIC) $(LIBSHARED) bench bench_full
+	cd tests && $(MAKE) clean
+
+distclean: clean
+	rm -f config.h config.log config.status Makefile mpdecimal.h
+	rm -rf autom4te.cache
+	cd tests && $(MAKE) distclean
+
+
+
+

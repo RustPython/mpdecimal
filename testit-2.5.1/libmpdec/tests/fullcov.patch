@@ -1,0 +1,104 @@
+diff --git a/libmpdec/mpdecimal.c b/libmpdec/mpdecimal.c
+index 9acc127..8f90463 100644
+--- a/libmpdec/mpdecimal.c
++++ b/libmpdec/mpdecimal.c
+@@ -8152,7 +8152,9 @@ _mpd_importsize(size_t srclen, uint32_t base)
+         return MPD_SSIZE_MAX;
+     }
+ 
++#if 0
+     assert((1ULL<<53) <= MPD_MAXIMPORT);
++#endif
+     upper_bound = (double)((1ULL<<53)-1);
+ #else
+     upper_bound = MPD_MAXIMPORT-1;
+@@ -8168,7 +8170,7 @@ static uint8_t
+ mpd_resize_u16(uint16_t **w, size_t nmemb)
+ {
+     uint8_t err = 0;
+-    *w = mpd_realloc(*w, nmemb, sizeof **w, &err);
++    *w = mpd_realloc(*w, (mpd_size_t)nmemb, sizeof **w, &err);
+     return !err;
+ }
+ 
+@@ -8176,7 +8178,7 @@ static uint8_t
+ mpd_resize_u32(uint32_t **w, size_t nmemb)
+ {
+     uint8_t err = 0;
+-    *w = mpd_realloc(*w, nmemb, sizeof **w, &err);
++    *w = mpd_realloc(*w, (mpd_size_t)nmemb, sizeof **w, &err);
+     return !err;
+ }
+ 
+@@ -8298,7 +8300,7 @@ _baseconv_to_larger(uint32_t **w, size_t wlen, mpd_uint_t wbase,
+ 
+     (*w)[n++] = u[--ulen];
+     while (--ulen != SIZE_MAX) {
+-        carry = _mpd_shortmul_b(*w, *w, n, ubase, wbase);
++        carry = _mpd_shortmul_b(*w, *w, (mpd_size_t)n, ubase, wbase);
+         if (carry) {
+             if (n >= wlen) {
+                 if (!mpd_resize_u32(w, n+1)) {
+@@ -8308,7 +8310,7 @@ _baseconv_to_larger(uint32_t **w, size_t wlen, mpd_uint_t wbase,
+             }
+             (*w)[n++] = carry;
+         }
+-        carry = _mpd_shortadd_b(*w, n, u[ulen], wbase);
++        carry = _mpd_shortadd_b(*w, (mpd_size_t)n, u[ulen], wbase);
+         if (carry) {
+             if (n >= wlen) {
+                 if (!mpd_resize_u32(w, n+1)) {
+@@ -8336,7 +8338,7 @@ _coeff_from_larger_base(mpd_t *w, size_t wlen, mpd_uint_t wbase,
+ 
+     do {
+         if (n >= wlen) {
+-            if (!mpd_qresize(w, n+1, status)) {
++            if (!mpd_qresize(w, (mpd_ssize_t)n+1, status)) {
+                 return SIZE_MAX;
+             }
+             wlen = n+1;
+@@ -8426,7 +8428,7 @@ mpd_qexport_u16(uint16_t **rdata, size_t rlen, uint32_t rbase,
+             *status |= MPD_Invalid_operation;
+             return SIZE_MAX;
+         }
+-        *rdata = mpd_alloc(rlen, sizeof **rdata);
++        *rdata = mpd_alloc((mpd_size_t)rlen, sizeof **rdata);
+         if (*rdata == NULL) {
+             goto malloc_error;
+         }
+@@ -8503,7 +8505,7 @@ mpd_qexport_u32(uint32_t **rdata, size_t rlen, uint32_t rbase,
+             *status |= MPD_Invalid_operation;
+             return SIZE_MAX;
+         }
+-        *rdata = mpd_alloc(rlen, sizeof **rdata);
++        *rdata = mpd_alloc((mpd_size_t)rlen, sizeof **rdata);
+         if (*rdata == NULL) {
+             goto malloc_error;
+         }
+@@ -8606,7 +8608,7 @@ mpd_qimport_u16(mpd_t *result,
+ 
+     mpd_set_flags(result, srcsign);
+     result->exp = 0;
+-    result->len = n;
++    result->len = (mpd_ssize_t)n;
+     mpd_setdigits(result);
+ 
+     mpd_qresize(result, result->len, status);
+@@ -8648,7 +8650,7 @@ mpd_qimport_u32(mpd_t *result,
+                                  status);
+ #else
+     if (srcbase == MPD_RADIX) {
+-        if (!mpd_qresize(result, srclen, status)) {
++        if (!mpd_qresize(result, (mpd_size_t)srclen, status)) {
+             return;
+         }
+         memcpy(result->data, srcdata, srclen * (sizeof *srcdata));
+@@ -8682,7 +8684,7 @@ mpd_qimport_u32(mpd_t *result,
+ 
+     mpd_set_flags(result, srcsign);
+     result->exp = 0;
+-    result->len = n;
++    result->len = (mpd_ssize_t)n;
+     mpd_setdigits(result);
+ 
+     mpd_qresize(result, result->len, status);
