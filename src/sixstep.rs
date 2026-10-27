@@ -10,7 +10,7 @@ unsafe extern "C" fn std_setmodulus(mut modnum: ::core::ffi::c_int, mut umod: *m
     *umod = *(&raw const mpd_moduli as *const mpd_uint_t).offset(modnum as isize);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn six_step_fnt(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,
@@ -104,7 +104,7 @@ pub unsafe extern "C" fn six_step_fnt(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn six_step_fnt(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,
@@ -198,7 +198,7 @@ pub unsafe extern "C" fn six_step_fnt(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn inv_six_step_fnt(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,
@@ -292,7 +292,7 @@ pub unsafe extern "C" fn inv_six_step_fnt(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn inv_six_step_fnt(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,

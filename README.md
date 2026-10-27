@@ -7,13 +7,15 @@ source tree builds for all targets; the configuration is selected by
 - 64-bit targets: CONFIG_64 (`uint128`)
 - 32-bit targets: CONFIG_32 (`ansi32`)
 
-The crate exports the C ABI of libmpdec (`staticlib`, `rlib`).
+The crate `mpdecimal-core` exports the C ABI of libmpdec only with the
+feature `capi`, which the upstream C tests use. Without it, the crate exports
+no C symbols and can be linked together with C libmpdec.
 
 ## Layout
 
 - `Cargo.toml`, `src/`: the translated crate, written by
-  `c2rust/install.py`. Do not edit by hand. Regenerate with
-  `c2rust/transpile-all.sh`.
+  `c2rust/install.py` and edited by hand since, so `install.py` no longer
+  overwrites them.
 - `c2rust/`: the translation pipeline, its run log (`c2rust/RUNS.md`) and the
   test scripts. See [c2rust/README.md](c2rust/README.md).
 - `libmpdec/`, `configure.ac`: the C sources and header configuration of
@@ -24,7 +26,8 @@ The crate exports the C ABI of libmpdec (`staticlib`, `rlib`).
 
 ## Tests
 
-The upstream C tests are linked with the crate's staticlib:
+The upstream C tests are linked with a staticlib of the crate, built by
+`cargo rustc --lib --crate-type staticlib --features capi`:
 
 ```sh
 CRATE=root c2rust/test-short.sh macos-aarch64-uint128   # one target

@@ -20,12 +20,12 @@ std::thread_local! {
     static ERRNO: Cell<c_int> = const { Cell::new(0) };
 }
 
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_errno() -> *mut c_int {
     ERRNO.with(|e| e.as_ptr())
 }
 
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_assert_fail(expr: *const c_char) -> ! {
     let expr = CStr::from_ptr(expr).to_string_lossy();
     eprintln!("libmpdec: assertion failed: {expr}");
@@ -37,7 +37,7 @@ extern "C" {
     fn raise(sig: c_int) -> c_int;
 }
 
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_raise(sig: c_int) -> c_int {
     #[cfg(not(target_os = "wasi"))]
     return raise(sig);
@@ -54,7 +54,7 @@ pub unsafe extern "C" fn mpd_c2rust_raise(sig: c_int) -> c_int {
     target_os = "freebsd",
     target_os = "dragonfly"
 ))]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_stderr() -> *mut FILE {
     extern "C" {
         static mut __stderrp: *mut FILE;
@@ -63,7 +63,7 @@ pub unsafe extern "C" fn mpd_c2rust_stderr() -> *mut FILE {
 }
 
 #[cfg(windows)]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_stderr() -> *mut FILE {
     extern "C" {
         fn __acrt_iob_func(index: u32) -> *mut FILE;
@@ -77,7 +77,7 @@ pub unsafe extern "C" fn mpd_c2rust_stderr() -> *mut FILE {
     target_os = "dragonfly",
     windows
 )))]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_stderr() -> *mut FILE {
     extern "C" {
         static mut stderr: *mut FILE;
@@ -155,7 +155,7 @@ unsafe fn strto(
     }
 }
 
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_strtol(
     nptr: *const c_char,
     endptr: *mut *mut c_char,
@@ -164,7 +164,7 @@ pub unsafe extern "C" fn mpd_c2rust_strtol(
     strto(nptr, endptr, base, c_long::MIN as i128, c_long::MAX as i128) as c_long
 }
 
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_c2rust_strtoll(
     nptr: *const c_char,
     endptr: *mut *mut c_char,

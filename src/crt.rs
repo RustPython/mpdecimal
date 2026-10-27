@@ -113,7 +113,7 @@ unsafe extern "C" fn _crt_div3(
     return r1;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn crt3(
     mut x1: *mut mpd_uint_t,
     mut x2: *mut mpd_uint_t,
@@ -177,7 +177,7 @@ pub unsafe extern "C" fn crt3(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn crt3(
     mut x1: *mut mpd_uint_t,
     mut x2: *mut mpd_uint_t,

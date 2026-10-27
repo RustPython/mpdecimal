@@ -91,7 +91,7 @@ unsafe extern "C" fn bitreverse_permute(mut a: *mut mpd_uint_t, mut n: mpd_size_
     }
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn fnt_dif2(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,
@@ -182,7 +182,7 @@ pub unsafe extern "C" fn fnt_dif2(
     bitreverse_permute(a, n);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn fnt_dif2(
     mut a: *mut mpd_uint_t,
     mut n: mpd_size_t,

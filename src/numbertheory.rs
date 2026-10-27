@@ -10,7 +10,7 @@ unsafe extern "C" fn std_setmodulus(mut modnum: ::core::ffi::c_int, mut umod: *m
     *umod = *(&raw const mpd_moduli as *const mpd_uint_t).offset(modnum as isize);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_getkernel(
     mut n: mpd_uint_t,
     mut sign: ::core::ffi::c_int,
@@ -31,7 +31,7 @@ pub unsafe extern "C" fn _mpd_getkernel(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_getkernel(
     mut n: mpd_uint_t,
     mut sign: ::core::ffi::c_int,
@@ -52,7 +52,7 @@ pub unsafe extern "C" fn _mpd_getkernel(
     };
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_init_fnt_params(
     mut n: mpd_size_t,
     mut sign: ::core::ffi::c_int,
@@ -104,7 +104,7 @@ pub unsafe extern "C" fn _mpd_init_fnt_params(
     return tparams;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_init_fnt_params(
     mut n: mpd_size_t,
     mut sign: ::core::ffi::c_int,
@@ -156,7 +156,7 @@ pub unsafe extern "C" fn _mpd_init_fnt_params(
     return tparams;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_init_w3table(
     mut w3table: *mut mpd_uint_t,
     mut sign: ::core::ffi::c_int,
@@ -171,7 +171,7 @@ pub unsafe extern "C" fn _mpd_init_w3table(
     *w3table.offset(2 as isize) = x64_powmod(kernel, 2 as mpd_uint_t, umod);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_init_w3table(
     mut w3table: *mut mpd_uint_t,
     mut sign: ::core::ffi::c_int,

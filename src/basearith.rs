@@ -208,7 +208,7 @@ unsafe extern "C" fn sub_size_t(mut a: mpd_size_t, mut b: mpd_size_t) -> mpd_siz
     }
     return a.wrapping_sub(b);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseadd(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -247,7 +247,7 @@ pub unsafe extern "C" fn _mpd_baseadd(
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseaddto(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -278,7 +278,7 @@ pub unsafe extern "C" fn _mpd_baseaddto(
         i = i.wrapping_add(1);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortadd(
     mut w: *mut mpd_uint_t,
     mut m: mpd_size_t,
@@ -308,7 +308,7 @@ pub unsafe extern "C" fn _mpd_shortadd(
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseincr(mut u: *mut mpd_uint_t, mut n: mpd_size_t) -> mpd_uint_t {
     let mut s: mpd_uint_t = 0;
     let mut carry: mpd_uint_t = 1 as mpd_uint_t;
@@ -326,7 +326,7 @@ pub unsafe extern "C" fn _mpd_baseincr(mut u: *mut mpd_uint_t, mut n: mpd_size_t
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_basesub(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -367,7 +367,7 @@ pub unsafe extern "C" fn _mpd_basesub(
         i = i.wrapping_add(1);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_basesubfrom(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -401,7 +401,7 @@ pub unsafe extern "C" fn _mpd_basesubfrom(
         i = i.wrapping_add(1);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortmul(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -433,7 +433,7 @@ pub unsafe extern "C" fn _mpd_shortmul(
     }
     *w.offset(i as isize) = carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_basemul(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -481,7 +481,7 @@ pub unsafe extern "C" fn _mpd_basemul(
         j = j.wrapping_add(1);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortdiv(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -514,7 +514,7 @@ pub unsafe extern "C" fn _mpd_shortdiv(
     }
     return rem;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_basedivmod(
     mut q: *mut mpd_uint_t,
     mut r: *mut mpd_uint_t,
@@ -655,7 +655,7 @@ pub unsafe extern "C" fn _mpd_basedivmod(
     return retval;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseshiftl(
     mut dest: *mut mpd_uint_t,
     mut src: *mut mpd_uint_t,
@@ -721,7 +721,7 @@ pub unsafe extern "C" fn _mpd_baseshiftl(
     mpd_uint_zero(dest, q as mpd_size_t);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseshiftl(
     mut dest: *mut mpd_uint_t,
     mut src: *mut mpd_uint_t,
@@ -787,7 +787,7 @@ pub unsafe extern "C" fn _mpd_baseshiftl(
     mpd_uint_zero(dest, q as mpd_size_t);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseshiftr(
     mut dest: *mut mpd_uint_t,
     mut src: *mut mpd_uint_t,
@@ -867,7 +867,7 @@ pub unsafe extern "C" fn _mpd_baseshiftr(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_baseshiftr(
     mut dest: *mut mpd_uint_t,
     mut src: *mut mpd_uint_t,
@@ -946,7 +946,7 @@ pub unsafe extern "C" fn _mpd_baseshiftr(
         rnd
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortadd_b(
     mut w: *mut mpd_uint_t,
     mut m: mpd_size_t,
@@ -972,7 +972,7 @@ pub unsafe extern "C" fn _mpd_shortadd_b(
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortmul_c(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -1004,7 +1004,7 @@ pub unsafe extern "C" fn _mpd_shortmul_c(
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortmul_b(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,
@@ -1038,7 +1038,7 @@ pub unsafe extern "C" fn _mpd_shortmul_b(
     }
     return carry;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_shortdiv_b(
     mut w: *mut mpd_uint_t,
     mut u: *const mpd_uint_t,

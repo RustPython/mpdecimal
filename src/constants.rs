@@ -1,30 +1,30 @@
 use crate::common::*;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_moduli: [mpd_uint_t; 3] = [
     18446744069414584321 as u64,
     18446744056529682433 as u64,
     18446742974197923841 as u64,
 ];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_moduli: [mpd_uint_t; 3] = [
     2113929217 as u32 as mpd_uint_t,
     2013265921 as u32 as mpd_uint_t,
     1811939329 as u32 as mpd_uint_t,
 ];
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_roots: [mpd_uint_t; 3] = [7 as u64, 10 as u64, 19 as u64];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_roots: [mpd_uint_t; 3] = [
     5 as u32 as mpd_uint_t,
     31 as u32 as mpd_uint_t,
     13 as u32 as mpd_uint_t,
 ];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_invmoduli: [[uint32_t; 3]; 3] = [
     [
         4293885170 as ::core::ffi::c_uint,
@@ -43,34 +43,34 @@ pub static mut mpd_invmoduli: [[uint32_t; 3]; 3] = [
     ],
 ];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut MPD_TWO63: ::core::ffi::c_float = 9223372036854775808.0f32;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut INV_P1_MOD_P2: mpd_uint_t = 18446744055098026669 as mpd_uint_t;
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut INV_P1_MOD_P2: mpd_uint_t = 2013265901 as mpd_uint_t;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut INV_P1P2_MOD_P3: mpd_uint_t = 287064143708160 as mpd_uint_t;
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut INV_P1P2_MOD_P3: mpd_uint_t = 54 as mpd_uint_t;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut LH_P1P2: mpd_uint_t = 18446744052234715137 as mpd_uint_t;
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut LH_P1P2: mpd_uint_t = 4127195137 as mpd_uint_t;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut UH_P1P2: mpd_uint_t = 18446744052234715141 as mpd_uint_t;
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut UH_P1P2: mpd_uint_t = 990904320 as mpd_uint_t;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_bits: [mpd_size_t; 64] = [
     1 as mpd_size_t,
     2 as mpd_size_t,
@@ -138,7 +138,7 @@ pub static mut mpd_bits: [mpd_size_t; 64] = [
     9223372036854775808 as u64 as mpd_size_t,
 ];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_bits: [mpd_size_t; 32] = [
     1 as mpd_size_t,
     2 as mpd_size_t,
@@ -174,7 +174,7 @@ pub static mut mpd_bits: [mpd_size_t; 32] = [
     2147483648 as u32 as mpd_size_t,
 ];
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_pow10: [mpd_uint_t; 20] = [
     1 as mpd_uint_t,
     10 as mpd_uint_t,
@@ -198,7 +198,7 @@ pub static mut mpd_pow10: [mpd_uint_t; 20] = [
     10000000000000000000 as u64,
 ];
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_pow10: [mpd_uint_t; 10] = [
     1 as mpd_uint_t,
     10 as mpd_uint_t,
@@ -212,9 +212,9 @@ pub static mut mpd_pow10: [mpd_uint_t; 10] = [
     1000000000 as mpd_uint_t,
 ];
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mprime_rdx: mpd_uint_t = 15581492618384294730 as mpd_uint_t;
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_round_string: [*const ::core::ffi::c_char; 9] = [
     b"ROUND_UP\0" as *const u8 as *const ::core::ffi::c_char,
     b"ROUND_DOWN\0" as *const u8 as *const ::core::ffi::c_char,
@@ -226,7 +226,7 @@ pub static mut mpd_round_string: [*const ::core::ffi::c_char; 9] = [
     b"ROUND_05UP\0" as *const u8 as *const ::core::ffi::c_char,
     b"ROUND_TRUNC\0" as *const u8 as *const ::core::ffi::c_char,
 ];
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_clamp_string: [*const ::core::ffi::c_char; 2] = [
     b"CLAMP_DEFAULT\0" as *const u8 as *const ::core::ffi::c_char,
     b"CLAMP_IEEE_754\0" as *const u8 as *const ::core::ffi::c_char,

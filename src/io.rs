@@ -260,7 +260,7 @@ unsafe extern "C" fn scan_payload(
     };
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_string(
     mut dec: *mut mpd_t,
     mut s: *const ::core::ffi::c_char,
@@ -463,7 +463,7 @@ pub unsafe extern "C" fn mpd_qset_string(
     mpd_seterror(dec, MPD_Conversion_syntax as uint32_t, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_string(
     mut dec: *mut mpd_t,
     mut s: *const ::core::ffi::c_char,
@@ -667,7 +667,7 @@ pub unsafe extern "C" fn mpd_qset_string(
     }
     mpd_seterror(dec, MPD_Conversion_syntax as uint32_t, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_string_exact(
     mut dec: *mut mpd_t,
     mut s: *const ::core::ffi::c_char,
@@ -1691,7 +1691,7 @@ unsafe extern "C" fn _mpd_to_string(
     *result = decstring;
     return cp.offset_from(decstring) as ::core::ffi::c_int as mpd_ssize_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_to_sci(
     mut dec: *const mpd_t,
     mut fmt: ::core::ffi::c_int,
@@ -1711,7 +1711,7 @@ pub unsafe extern "C" fn mpd_to_sci(
     );
     return res;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_to_eng(
     mut dec: *const mpd_t,
     mut fmt: ::core::ffi::c_int,
@@ -1731,7 +1731,7 @@ pub unsafe extern "C" fn mpd_to_eng(
     );
     return res;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_to_sci_size(
     mut res: *mut *mut ::core::ffi::c_char,
     mut dec: *const mpd_t,
@@ -1745,7 +1745,7 @@ pub unsafe extern "C" fn mpd_to_sci_size(
     };
     return _mpd_to_string(res, dec, flags, MPD_DEFAULT_DOTPLACE as mpd_ssize_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_to_eng_size(
     mut res: *mut *mut ::core::ffi::c_char,
     mut dec: *const mpd_t,
@@ -1865,7 +1865,7 @@ unsafe extern "C" fn _mpd_copy_utf8(
         return -(1 as ::core::ffi::c_int);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_validate_lconv(mut spec: *mut mpd_spec_t) -> ::core::ffi::c_int {
     let mut n: size_t = 0;
     let mut cp: *const ::core::ffi::c_char = (*spec).grouping;
@@ -1886,7 +1886,7 @@ pub unsafe extern "C" fn mpd_validate_lconv(mut spec: *mut mpd_spec_t) -> ::core
     return 0 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_parse_fmt_str(
     mut spec: *mut mpd_spec_t,
     mut fmt: *const ::core::ffi::c_char,
@@ -2021,7 +2021,7 @@ pub unsafe extern "C" fn mpd_parse_fmt_str(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_parse_fmt_str(
     mut spec: *mut mpd_spec_t,
     mut fmt: *const ::core::ffi::c_char,
@@ -2704,7 +2704,7 @@ unsafe extern "C" fn _mpd_round(
     }
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qformat_spec(
     mut dec: *const mpd_t,
     mut spec: *const mpd_spec_t,
@@ -2928,7 +2928,7 @@ pub unsafe extern "C" fn mpd_qformat_spec(
     return ::core::ptr::null_mut::<::core::ffi::c_char>();
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qformat_spec(
     mut dec: *const mpd_t,
     mut spec: *const mpd_spec_t,
@@ -3151,7 +3151,7 @@ pub unsafe extern "C" fn mpd_qformat_spec(
     mpd_del(&raw mut tmp);
     return ::core::ptr::null_mut::<::core::ffi::c_char>();
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qformat(
     mut dec: *const mpd_t,
     mut fmt: *const ::core::ffi::c_char,
@@ -3211,7 +3211,7 @@ static mut mpd_signal_string: [*const ::core::ffi::c_char; 15] = [
     b"Underflow\0" as *const u8 as *const ::core::ffi::c_char,
 ];
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_snprint_flags(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3252,7 +3252,7 @@ pub unsafe extern "C" fn mpd_snprint_flags(
     return cp.offset_from(dest) as i64 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_snprint_flags(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3293,7 +3293,7 @@ pub unsafe extern "C" fn mpd_snprint_flags(
     return cp.offset_from(dest) as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_lsnprint_flags(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3344,7 +3344,7 @@ pub unsafe extern "C" fn mpd_lsnprint_flags(
     return cp.offset_from(dest) as i64 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_lsnprint_flags(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3395,7 +3395,7 @@ pub unsafe extern "C" fn mpd_lsnprint_flags(
     return cp.offset_from(dest) as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_lsnprint_signals(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3464,7 +3464,7 @@ pub unsafe extern "C" fn mpd_lsnprint_signals(
     return cp.offset_from(dest) as i64 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_lsnprint_signals(
     mut dest: *mut ::core::ffi::c_char,
     mut nmemb: ::core::ffi::c_int,
@@ -3532,7 +3532,7 @@ pub unsafe extern "C" fn mpd_lsnprint_signals(
     *cp = '\0' as i32 as ::core::ffi::c_char;
     return cp.offset_from(dest) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_fprint(mut file: *mut FILE, mut dec: *const mpd_t) {
     let mut decstring: *mut ::core::ffi::c_char = ::core::ptr::null_mut::<::core::ffi::c_char>();
     decstring = mpd_to_sci(dec, 1 as ::core::ffi::c_int);
@@ -3550,7 +3550,7 @@ pub unsafe extern "C" fn mpd_fprint(mut file: *mut FILE, mut dec: *const mpd_t) 
         );
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_print(mut dec: *const mpd_t) {
     let mut decstring: *mut ::core::ffi::c_char = ::core::ptr::null_mut::<::core::ffi::c_char>();
     decstring = mpd_to_sci(dec, 1 as ::core::ffi::c_int);
