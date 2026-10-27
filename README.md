@@ -7,7 +7,7 @@ source tree builds for all targets; the configuration is selected by
 - 64-bit targets: CONFIG_64 (`uint128`)
 - 32-bit targets: CONFIG_32 (`ansi32`)
 
-The crate exports the C ABI of libmpdec (`staticlib`, `rlib`).
+The crate exports the C ABI of libmpdec.
 
 ## Layout
 
@@ -24,7 +24,8 @@ The crate exports the C ABI of libmpdec (`staticlib`, `rlib`).
 
 ## Tests
 
-The upstream C tests are linked with the crate's staticlib:
+The upstream C tests are linked with a staticlib of the crate, built by
+`cargo rustc --lib --crate-type staticlib`:
 
 ```sh
 CRATE=root c2rust/test-short.sh macos-aarch64-uint128   # one target

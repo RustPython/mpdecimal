@@ -37,9 +37,12 @@ work=$here/work/$label
 if [ "$CRATE" = root ]; then
     crate=$root
     staticlib=libmpdecimal_core.a
+    # the root crate is an rlib
+    cargo_cmd="rustc --lib --crate-type staticlib"
 else
     crate=$here/out/$CRATE/mpdec
     staticlib=libmpdec.a
+    cargo_cmd=build
 fi
 if [ "$CRATE" = "$label" ]; then
     build=$work/test-short
@@ -72,7 +75,7 @@ if [ -n "$RUST_TARGET" ]; then
 fi
 
 # shellcheck disable=SC2086
-cargo "+$RUST_TOOLCHAIN" build --quiet --manifest-path "$crate/Cargo.toml" \
+cargo "+$RUST_TOOLCHAIN" $cargo_cmd --quiet --manifest-path "$crate/Cargo.toml" \
     --target-dir "$target_dir" $cargo_target ${FEATURES:+--features "$FEATURES"}
 
 if [ -z "${SYSLIBS+set}" ]; then

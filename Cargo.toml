@@ -8,9 +8,6 @@ autoexamples = false
 autotests = false
 autobenches = false
 
-[lib]
-crate-type = ["staticlib", "rlib"]
-
 [features]
 # The test hooks of mpdecimal-testit (c2rust/test-hooks/README.md): extra
 # symbols and fault injection used by the long tests. Never enable it

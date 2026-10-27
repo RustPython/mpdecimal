@@ -93,10 +93,13 @@ esac
 if [ "$CRATE" = root ]; then
     crate=$root
     staticlib=libmpdecimal_core.a
+    # the root crate is an rlib
+    cargo_cmd="rustc --lib --crate-type staticlib"
     features="--features test-hooks"
 else
     crate=$here/out/$CRATE/mpdec
     staticlib=libmpdec.a
+    cargo_cmd=build
     features=
 fi
 target_dir=$work/target-long-$CRATE
@@ -115,7 +118,7 @@ if [ -n "$RUST_TARGET" ]; then
     profile_dir=$target_dir/$RUST_TARGET/${profile_dir##*/}
 fi
 # shellcheck disable=SC2086
-cargo "+$RUST_TOOLCHAIN" build --quiet --manifest-path "$crate/Cargo.toml" \
+cargo "+$RUST_TOOLCHAIN" $cargo_cmd --quiet --manifest-path "$crate/Cargo.toml" \
     --target-dir "$target_dir" $cargo_target $features $profile
 lib=$profile_dir/$staticlib
 
