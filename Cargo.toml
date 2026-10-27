@@ -9,7 +9,11 @@ autotests = false
 autobenches = false
 
 [features]
+# Exports the C symbols of libmpdec, for linking the upstream C tests. The
+# tests link a staticlib built with
+# `cargo rustc --lib --crate-type staticlib --features capi`.
+capi = []
 # The test hooks of mpdecimal-testit (c2rust/test-hooks/README.md): extra
 # symbols and fault injection used by the long tests. Never enable it
 # outside of these tests.
-test-hooks = []
+test-hooks = ["capi"]

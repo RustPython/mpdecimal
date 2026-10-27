@@ -7,7 +7,9 @@ source tree builds for all targets; the configuration is selected by
 - 64-bit targets: CONFIG_64 (`uint128`)
 - 32-bit targets: CONFIG_32 (`ansi32`)
 
-The crate exports the C ABI of libmpdec.
+The crate `mpdecimal-core` exports the C ABI of libmpdec only with the
+feature `capi`, which the upstream C tests use. Without it, the crate exports
+no C symbols and can be linked together with C libmpdec.
 
 ## Layout
 
@@ -25,7 +27,7 @@ The crate exports the C ABI of libmpdec.
 ## Tests
 
 The upstream C tests are linked with a staticlib of the crate, built by
-`cargo rustc --lib --crate-type staticlib`:
+`cargo rustc --lib --crate-type staticlib --features capi`:
 
 ```sh
 CRATE=root c2rust/test-short.sh macos-aarch64-uint128   # one target

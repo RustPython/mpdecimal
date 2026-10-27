@@ -93,7 +93,7 @@ esac
 if [ "$CRATE" = root ]; then
     crate=$root
     staticlib=libmpdecimal_core.a
-    # the root crate is an rlib
+    # the root crate is an rlib that exports C symbols only with capi
     cargo_cmd="rustc --lib --crate-type staticlib"
     features="--features test-hooks"
 else

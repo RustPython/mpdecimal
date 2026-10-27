@@ -58,7 +58,7 @@ unsafe extern "C" fn mulmod_size_t(
 }
 pub const BUFSIZE: ::core::ffi::c_int = 4096 as ::core::ffi::c_int;
 pub const SIDE: ::core::ffi::c_int = 128 as ::core::ffi::c_int;
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn std_trans(
     mut dest: *mut mpd_uint_t,
     mut src: *mut mpd_uint_t,
@@ -313,7 +313,7 @@ unsafe extern "C" fn squaretrans_pow2(mut matrix: *mut mpd_uint_t, mut size: mpd
         r = r.wrapping_add(b);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn transpose_pow2(
     mut matrix: *mut mpd_uint_t,
     mut rows: mpd_size_t,

@@ -37,12 +37,14 @@ work=$here/work/$label
 if [ "$CRATE" = root ]; then
     crate=$root
     staticlib=libmpdecimal_core.a
-    # the root crate is an rlib
+    # the root crate is an rlib that exports C symbols only with capi
     cargo_cmd="rustc --lib --crate-type staticlib"
+    features=capi${FEATURES:+,$FEATURES}
 else
     crate=$here/out/$CRATE/mpdec
     staticlib=libmpdec.a
     cargo_cmd=build
+    features=$FEATURES
 fi
 if [ "$CRATE" = "$label" ]; then
     build=$work/test-short
@@ -76,7 +78,7 @@ fi
 
 # shellcheck disable=SC2086
 cargo "+$RUST_TOOLCHAIN" $cargo_cmd --quiet --manifest-path "$crate/Cargo.toml" \
-    --target-dir "$target_dir" $cargo_target ${FEATURES:+--features "$FEATURES"}
+    --target-dir "$target_dir" $cargo_target ${features:+--features "$features"}
 
 if [ -z "${SYSLIBS+set}" ]; then
     case $(uname -s) in

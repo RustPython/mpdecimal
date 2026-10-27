@@ -512,29 +512,29 @@ static mut zero: mpd_t = unsafe {
     }
 };
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_func() {
     func_count = 0 as ::core::ffi::c_int;
     func_fail = 0 as ::core::ffi::c_int;
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut func_count: ::core::ffi::c_int = 0 as ::core::ffi::c_int;
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut func_fail: ::core::ffi::c_int = 0 as ::core::ffi::c_int;
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_version() -> *const ::core::ffi::c_char {
     return MPD_VERSION.as_ptr();
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_func_fail(mut n: ::core::ffi::c_int) {
     func_count = 0 as ::core::ffi::c_int;
     func_fail = n;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_word_digits(mut word: mpd_uint_t) -> ::core::ffi::c_int {
     if word < *(&raw const mpd_pow10 as *const mpd_uint_t).offset(9 as isize) {
         if word < *(&raw const mpd_pow10 as *const mpd_uint_t).offset(4 as isize) {
@@ -605,7 +605,7 @@ pub unsafe extern "C" fn mpd_word_digits(mut word: mpd_uint_t) -> ::core::ffi::c
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_word_digits(mut word: mpd_uint_t) -> ::core::ffi::c_int {
     if word < *(&raw const mpd_pow10 as *const mpd_uint_t).offset(4 as isize) {
         if word < *(&raw const mpd_pow10 as *const mpd_uint_t).offset(2 as isize) {
@@ -641,19 +641,19 @@ pub unsafe extern "C" fn mpd_word_digits(mut word: mpd_uint_t) -> ::core::ffi::c
         10 as ::core::ffi::c_int
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_adjexp(mut dec: *const mpd_t) -> mpd_ssize_t {
     return (*dec).exp + (*dec).digits - 1 as mpd_ssize_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_etiny(mut ctx: *const mpd_context_t) -> mpd_ssize_t {
     return (*ctx).emin - ((*ctx).prec - 1 as mpd_ssize_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_etop(mut ctx: *const mpd_context_t) -> mpd_ssize_t {
     return (*ctx).emax - ((*ctx).prec - 1 as mpd_ssize_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_msword(mut dec: *const mpd_t) -> mpd_uint_t {
     if (*dec).len > 0 as mpd_ssize_t {
     } else {
@@ -661,7 +661,7 @@ pub unsafe extern "C" fn mpd_msword(mut dec: *const mpd_t) -> mpd_uint_t {
     };
     return *(*dec).data.offset(((*dec).len - 1 as mpd_ssize_t) as isize);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_msd(mut word: mpd_uint_t) -> mpd_uint_t {
     let mut n: ::core::ffi::c_int = 0;
     n = mpd_word_digits(word);
@@ -669,11 +669,11 @@ pub unsafe extern "C" fn mpd_msd(mut word: mpd_uint_t) -> mpd_uint_t {
         *(&raw const mpd_pow10 as *const mpd_uint_t).offset((n - 1 as ::core::ffi::c_int) as isize),
     );
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_lsd(mut word: mpd_uint_t) -> mpd_uint_t {
     return word.wrapping_rem(10 as mpd_uint_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_digits_to_size(mut digits: mpd_ssize_t) -> mpd_ssize_t {
     let mut q: mpd_ssize_t = 0;
     let mut r: mpd_ssize_t = 0;
@@ -684,62 +684,62 @@ pub unsafe extern "C" fn mpd_digits_to_size(mut digits: mpd_ssize_t) -> mpd_ssiz
         q + 1 as mpd_ssize_t
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_exp_digits(mut exp: mpd_ssize_t) -> ::core::ffi::c_int {
     exp = if exp < 0 as mpd_ssize_t { -exp } else { exp };
     return mpd_word_digits(exp as mpd_uint_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_iscanonical(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isfinite(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return ((*dec).flags as ::core::ffi::c_int & MPD_SPECIAL == 0) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isinfinite(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_INF as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isnan(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int
         & (MPD_NAN as ::core::ffi::c_int | MPD_SNAN as ::core::ffi::c_int);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isnegative(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_NEG as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_ispositive(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return ((*dec).flags as ::core::ffi::c_int & MPD_NEG as ::core::ffi::c_int == 0)
         as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isqnan(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_NAN as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_issigned(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_NEG as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_issnan(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_SNAN as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isspecial(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_SPECIAL;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_iszero(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (mpd_isspecial(dec) == 0 && mpd_msword(dec) == 0 as mpd_uint_t) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_iszerocoeff(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (mpd_msword(dec) == 0 as mpd_uint_t) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isnormal(
     mut dec: *const mpd_t,
     mut ctx: *const mpd_context_t,
@@ -752,7 +752,7 @@ pub unsafe extern "C" fn mpd_isnormal(
     }
     return (mpd_adjexp(dec) >= (*ctx).emin) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_issubnormal(
     mut dec: *const mpd_t,
     mut ctx: *const mpd_context_t,
@@ -765,52 +765,52 @@ pub unsafe extern "C" fn mpd_issubnormal(
     }
     return (mpd_adjexp(dec) < (*ctx).emin) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isoddword(mut word: mpd_uint_t) -> ::core::ffi::c_int {
     return (word & 1 as mpd_uint_t) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isoddcoeff(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return mpd_isoddword(*(*dec).data.offset(0 as isize));
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sign(mut dec: *const mpd_t) -> uint8_t {
     return ((*dec).flags as ::core::ffi::c_int & MPD_NEG as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_arith_sign(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return 1 as ::core::ffi::c_int - 2 as ::core::ffi::c_int * mpd_isnegative(dec);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_radix() -> ::core::ffi::c_long {
     return 10 as ::core::ffi::c_long;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isdynamic(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return ((*dec).flags as ::core::ffi::c_int & MPD_STATIC as ::core::ffi::c_int == 0)
         as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isstatic(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_STATIC as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isdynamic_data(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return ((*dec).flags as ::core::ffi::c_int & MPD_DATAFLAGS == 0) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isstatic_data(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_STATIC_DATA as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isshared_data(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_SHARED_DATA as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isconst_data(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (*dec).flags as ::core::ffi::c_int & MPD_CONST_DATA as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_uint_zero(mut dest: *mut mpd_uint_t, mut len: mpd_size_t) {
     let mut i: mpd_size_t = 0;
     i = 0 as mpd_size_t;
@@ -819,7 +819,7 @@ pub unsafe extern "C" fn mpd_uint_zero(mut dest: *mut mpd_uint_t, mut len: mpd_s
         i = i.wrapping_add(1);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_del(mut dec: *mut mpd_t) {
     if mpd_isdynamic_data(dec) != 0 {
         mpd_free.expect("non-null function pointer")((*dec).data as *mut ::core::ffi::c_void);
@@ -828,7 +828,7 @@ pub unsafe extern "C" fn mpd_del(mut dec: *mut mpd_t) {
         mpd_free.expect("non-null function pointer")(dec as *mut ::core::ffi::c_void);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qresize(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -906,7 +906,7 @@ unsafe extern "C" fn mpd_qresize_cxx(
     }
     return mpd_realloc_dyn_cxx(result, nwords);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qresize_zero(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -947,7 +947,7 @@ pub unsafe extern "C" fn mpd_qresize_zero(
     mpd_uint_zero((*result).data, nwords as mpd_size_t);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_minalloc(mut result: *mut mpd_t) {
     if mpd_isconst_data(result) == 0 {
     } else {
@@ -974,7 +974,7 @@ pub unsafe extern "C" fn mpd_minalloc(mut result: *mut mpd_t) {
         }
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_resize(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -987,7 +987,7 @@ pub unsafe extern "C" fn mpd_resize(
     }
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_resize_zero(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -1000,19 +1000,19 @@ pub unsafe extern "C" fn mpd_resize_zero(
     }
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_setdigits(mut result: *mut mpd_t) {
     let mut wdigits: mpd_ssize_t = mpd_word_digits(mpd_msword(result)) as mpd_ssize_t;
     (*result).digits = wdigits + ((*result).len - 1 as mpd_ssize_t) * MPD_RDIGITS as mpd_ssize_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_sign(mut result: *mut mpd_t, mut sign: uint8_t) {
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int & !(MPD_NEG as ::core::ffi::c_int)) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | sign as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_signcpy(mut result: *mut mpd_t, mut a: *const mpd_t) {
     let mut sign: uint8_t =
         ((*a).flags as ::core::ffi::c_int & MPD_NEG as ::core::ffi::c_int) as uint8_t;
@@ -1021,79 +1021,79 @@ pub unsafe extern "C" fn mpd_signcpy(mut result: *mut mpd_t, mut a: *const mpd_t
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | sign as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_infinity(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_SPECIAL) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_INF as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_qnan(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_SPECIAL) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_NAN as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_snan(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_SPECIAL) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_SNAN as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_negative(mut result: *mut mpd_t) {
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_NEG as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_positive(mut result: *mut mpd_t) {
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int & !(MPD_NEG as ::core::ffi::c_int)) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_dynamic(mut result: *mut mpd_t) {
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int & !(MPD_STATIC as ::core::ffi::c_int)) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_static(mut result: *mut mpd_t) {
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_STATIC as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_dynamic_data(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_DATAFLAGS) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_static_data(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_DATAFLAGS) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_STATIC_DATA as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_shared_data(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_DATAFLAGS) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_SHARED_DATA as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_const_data(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int & !MPD_DATAFLAGS) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | MPD_CONST_DATA as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_clear_flags(mut result: *mut mpd_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int
         & (MPD_STATIC as ::core::ffi::c_int | MPD_DATAFLAGS)) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_set_flags(mut result: *mut mpd_t, mut flags: uint8_t) {
     (*result).flags = ((*result).flags as ::core::ffi::c_int
         & (MPD_STATIC as ::core::ffi::c_int | MPD_DATAFLAGS)) as uint8_t;
     (*result).flags =
         ((*result).flags as ::core::ffi::c_int | flags as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_copy_flags(mut result: *mut mpd_t, mut a: *const mpd_t) {
     let mut aflags: uint8_t = (*a).flags;
     (*result).flags = ((*result).flags as ::core::ffi::c_int
@@ -1119,7 +1119,7 @@ unsafe extern "C" fn mpd_workcontext(
 unsafe extern "C" fn _mpd_negate(mut dec: *mut mpd_t) {
     (*dec).flags = ((*dec).flags as ::core::ffi::c_int ^ MPD_NEG as ::core::ffi::c_int) as uint8_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_zerocoeff(mut result: *mut mpd_t) {
     mpd_minalloc(result);
     (*result).digits = 1 as mpd_ssize_t;
@@ -1127,7 +1127,7 @@ pub unsafe extern "C" fn mpd_zerocoeff(mut result: *mut mpd_t) {
     *(*result).data.offset(0 as isize) = 0 as mpd_uint_t;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmaxcoeff(
     mut result: *mut mpd_t,
     mut ctx: *const mpd_context_t,
@@ -1165,7 +1165,7 @@ pub unsafe extern "C" fn mpd_qmaxcoeff(
     }
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmaxcoeff(
     mut result: *mut mpd_t,
     mut ctx: *const mpd_context_t,
@@ -1388,7 +1388,7 @@ unsafe extern "C" fn _mpd_real_size(
     }
     return size;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_trail_zeros(mut dec: *const mpd_t) -> mpd_ssize_t {
     let mut word: mpd_uint_t = 0;
     let mut i: mpd_ssize_t = 0;
@@ -1417,7 +1417,7 @@ unsafe extern "C" fn _mpd_isint(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     tz = mpd_trail_zeros(dec);
     return ((*dec).exp + tz >= 0 as mpd_ssize_t) as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isinteger(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     if mpd_isspecial(dec) != 0 {
         return 0 as ::core::ffi::c_int;
@@ -1462,7 +1462,7 @@ unsafe extern "C" fn mpd_coeff_isallnine(mut dec: *const mpd_t) -> ::core::ffi::
     }
     return 0 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_isodd(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     let mut q: mpd_uint_t = 0;
     let mut r: mpd_uint_t = 0;
@@ -1487,7 +1487,7 @@ pub unsafe extern "C" fn mpd_isodd(mut dec: *const mpd_t) -> ::core::ffi::c_int 
     return ((*dec).exp == 0 as mpd_ssize_t && mpd_isoddword(*(*dec).data.offset(0 as isize)) != 0)
         as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_iseven(mut dec: *const mpd_t) -> ::core::ffi::c_int {
     return (mpd_isodd(dec) == 0) as ::core::ffi::c_int;
 }
@@ -1534,7 +1534,7 @@ unsafe extern "C" fn _settriple(
     }) as mpd_ssize_t;
     mpd_setdigits(result);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_setspecial(
     mut result: *mut mpd_t,
     mut sign: uint8_t,
@@ -1550,7 +1550,7 @@ pub unsafe extern "C" fn mpd_setspecial(
     (*result).digits = (*result).len;
     (*result).exp = (*result).digits;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_seterror(
     mut result: *mut mpd_t,
     mut flags: uint32_t,
@@ -1564,7 +1564,7 @@ pub unsafe extern "C" fn mpd_seterror(
     (*result).exp = (*result).digits;
     *status |= flags;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_ssize(
     mut result: *mut mpd_t,
     mut a: mpd_ssize_t,
@@ -1587,7 +1587,7 @@ pub unsafe extern "C" fn mpd_qsset_ssize(
     _ssettriple(result, sign, u, 0 as mpd_ssize_t);
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_uint(
     mut result: *mut mpd_t,
     mut a: mpd_uint_t,
@@ -1597,7 +1597,7 @@ pub unsafe extern "C" fn mpd_qsset_uint(
     _ssettriple(result, MPD_POS, a, 0 as mpd_ssize_t);
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_i32(
     mut result: *mut mpd_t,
     mut a: int32_t,
@@ -1606,7 +1606,7 @@ pub unsafe extern "C" fn mpd_qsset_i32(
 ) {
     mpd_qsset_ssize(result, a as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_u32(
     mut result: *mut mpd_t,
     mut a: uint32_t,
@@ -1616,7 +1616,7 @@ pub unsafe extern "C" fn mpd_qsset_u32(
     mpd_qsset_uint(result, a as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_i64(
     mut result: *mut mpd_t,
     mut a: int64_t,
@@ -1626,7 +1626,7 @@ pub unsafe extern "C" fn mpd_qsset_i64(
     mpd_qsset_ssize(result, a as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsset_u64(
     mut result: *mut mpd_t,
     mut a: uint64_t,
@@ -1635,7 +1635,7 @@ pub unsafe extern "C" fn mpd_qsset_u64(
 ) {
     mpd_qsset_uint(result, a as mpd_uint_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_ssize(
     mut result: *mut mpd_t,
     mut a: mpd_ssize_t,
@@ -1645,7 +1645,7 @@ pub unsafe extern "C" fn mpd_qset_ssize(
     mpd_minalloc(result);
     mpd_qsset_ssize(result, a, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_uint(
     mut result: *mut mpd_t,
     mut a: mpd_uint_t,
@@ -1655,7 +1655,7 @@ pub unsafe extern "C" fn mpd_qset_uint(
     _settriple(result, MPD_POS, a, 0 as mpd_ssize_t);
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_i32(
     mut result: *mut mpd_t,
     mut a: int32_t,
@@ -1664,7 +1664,7 @@ pub unsafe extern "C" fn mpd_qset_i32(
 ) {
     mpd_qset_ssize(result, a as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_u32(
     mut result: *mut mpd_t,
     mut a: uint32_t,
@@ -1740,7 +1740,7 @@ unsafe extern "C" fn _c32_qset_i64(
     mpd_qfinalize(result, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_i64(
     mut result: *mut mpd_t,
     mut a: int64_t,
@@ -1750,7 +1750,7 @@ pub unsafe extern "C" fn mpd_qset_i64(
     mpd_qset_ssize(result, a as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_i64(
     mut result: *mut mpd_t,
     mut a: int64_t,
@@ -1760,7 +1760,7 @@ pub unsafe extern "C" fn mpd_qset_i64(
     _c32_qset_i64(result, a, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_i64_exact(
     mut result: *mut mpd_t,
     mut a: int64_t,
@@ -1794,7 +1794,7 @@ pub unsafe extern "C" fn mpd_qset_i64_exact(
         | (workstatus & MPD_Errors as uint32_t) as ::core::ffi::c_uint) as uint32_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_i64_exact(
     mut result: *mut mpd_t,
     mut a: int64_t,
@@ -1823,7 +1823,7 @@ pub unsafe extern "C" fn mpd_qset_i64_exact(
         | (workstatus & MPD_Errors as uint32_t) as ::core::ffi::c_uint) as uint32_t;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_u64(
     mut result: *mut mpd_t,
     mut a: uint64_t,
@@ -1833,7 +1833,7 @@ pub unsafe extern "C" fn mpd_qset_u64(
     mpd_qset_uint(result, a as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_u64(
     mut result: *mut mpd_t,
     mut a: uint64_t,
@@ -1843,7 +1843,7 @@ pub unsafe extern "C" fn mpd_qset_u64(
     _c32_qset_u64(result, a, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_u64_exact(
     mut result: *mut mpd_t,
     mut a: uint64_t,
@@ -1877,7 +1877,7 @@ pub unsafe extern "C" fn mpd_qset_u64_exact(
         | (workstatus & MPD_Errors as uint32_t) as ::core::ffi::c_uint) as uint32_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qset_u64_exact(
     mut result: *mut mpd_t,
     mut a: uint64_t,
@@ -2043,21 +2043,21 @@ unsafe extern "C" fn _mpd_qget_uint(
     }
     return lo;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_uint(
     mut a: *const mpd_t,
     mut status: *mut uint32_t,
 ) -> mpd_uint_t {
     return _mpd_qget_uint(1 as ::core::ffi::c_int, a, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qabs_uint(
     mut a: *const mpd_t,
     mut status: *mut uint32_t,
 ) -> mpd_uint_t {
     return _mpd_qget_uint(0 as ::core::ffi::c_int, a, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_ssize(
     mut a: *const mpd_t,
     mut status: *mut uint32_t,
@@ -2207,12 +2207,12 @@ unsafe extern "C" fn _c32_qget_i64(mut a: *const mpd_t, mut status: *mut uint32_
     return INT64_MAX as int64_t;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_u64(mut a: *const mpd_t, mut status: *mut uint32_t) -> uint64_t {
     return mpd_qget_uint(a, status) as uint64_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_u64(mut a: *const mpd_t, mut status: *mut uint32_t) -> uint64_t {
     let mut workstatus: uint32_t = 0 as uint32_t;
     let mut x: uint64_t = _c32_qget_u64(1 as ::core::ffi::c_int, a, &raw mut workstatus);
@@ -2220,12 +2220,12 @@ pub unsafe extern "C" fn mpd_qget_u64(mut a: *const mpd_t, mut status: *mut uint
     return x;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_i64(mut a: *const mpd_t, mut status: *mut uint32_t) -> int64_t {
     return mpd_qget_ssize(a, status) as int64_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_i64(mut a: *const mpd_t, mut status: *mut uint32_t) -> int64_t {
     let mut workstatus: uint32_t = 0 as uint32_t;
     let mut x: int64_t = _c32_qget_i64(a, &raw mut workstatus);
@@ -2233,7 +2233,7 @@ pub unsafe extern "C" fn mpd_qget_i64(mut a: *const mpd_t, mut status: *mut uint
     return x;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_u32(mut a: *const mpd_t, mut status: *mut uint32_t) -> uint32_t {
     let mut workstatus: uint32_t = 0 as uint32_t;
     let mut x: uint64_t = mpd_qget_uint(a, &raw mut workstatus) as uint64_t;
@@ -2248,12 +2248,12 @@ pub unsafe extern "C" fn mpd_qget_u32(mut a: *const mpd_t, mut status: *mut uint
     return x as uint32_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_u32(mut a: *const mpd_t, mut status: *mut uint32_t) -> uint32_t {
     return mpd_qget_uint(a, status) as uint32_t;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_i32(mut a: *const mpd_t, mut status: *mut uint32_t) -> int32_t {
     let mut workstatus: uint32_t = 0 as uint32_t;
     let mut x: int64_t = mpd_qget_ssize(a, &raw mut workstatus) as int64_t;
@@ -2268,11 +2268,11 @@ pub unsafe extern "C" fn mpd_qget_i32(mut a: *const mpd_t, mut status: *mut uint
     return x as int32_t;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qget_i32(mut a: *const mpd_t, mut status: *mut uint32_t) -> int32_t {
     return mpd_qget_ssize(a, status) as int32_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcheck_nan(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2293,7 +2293,7 @@ pub unsafe extern "C" fn mpd_qcheck_nan(
     }
     return 0 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcheck_nans(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2738,7 +2738,7 @@ unsafe extern "C" fn _mpd_check_round(
         }
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qfinalize(
     mut result: *mut mpd_t,
     mut ctx: *const mpd_context_t,
@@ -2763,7 +2763,7 @@ unsafe extern "C" fn _mpd_copy_shared(mut dest: *mut mpd_t, mut src: *const mpd_
     mpd_set_shared_data(dest);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2787,7 +2787,7 @@ pub unsafe extern "C" fn mpd_qcopy(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2811,7 +2811,7 @@ pub unsafe extern "C" fn mpd_qcopy(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy_cxx(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2834,7 +2834,7 @@ pub unsafe extern "C" fn mpd_qcopy_cxx(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy_cxx(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2887,7 +2887,7 @@ unsafe extern "C" fn mpd_qcopy_static(mut result: *mut mpd_t, mut a: *const mpd_
     (*result).len = (*a).len;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qncopy(mut a: *const mpd_t) -> *mut mpd_t {
     let mut result: *mut mpd_t = ::core::ptr::null_mut::<mpd_t>();
     result = mpd_qnew_size((*a).len);
@@ -2906,7 +2906,7 @@ pub unsafe extern "C" fn mpd_qncopy(mut a: *const mpd_t) -> *mut mpd_t {
     return result;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qncopy(mut a: *const mpd_t) -> *mut mpd_t {
     let mut result: *mut mpd_t = ::core::ptr::null_mut::<mpd_t>();
     result = mpd_qnew_size((*a).len);
@@ -2924,7 +2924,7 @@ pub unsafe extern "C" fn mpd_qncopy(mut a: *const mpd_t) -> *mut mpd_t {
     (*result).len = (*a).len;
     return result;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy_abs(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2936,7 +2936,7 @@ pub unsafe extern "C" fn mpd_qcopy_abs(
     mpd_set_positive(result);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy_negate(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -2948,7 +2948,7 @@ pub unsafe extern "C" fn mpd_qcopy_negate(
     _mpd_negate(result);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcopy_sign(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3254,7 +3254,7 @@ unsafe extern "C" fn _mpd_cmp_abs(mut a: *const mpd_t, mut b: *const mpd_t) -> :
     }
     return _mpd_cmp_same_adjexp(a, b);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcmp(
     mut a: *const mpd_t,
     mut b: *const mpd_t,
@@ -3268,7 +3268,7 @@ pub unsafe extern "C" fn mpd_qcmp(
     }
     return _mpd_cmp(a, b);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcompare(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3291,7 +3291,7 @@ pub unsafe extern "C" fn mpd_qcompare(
     );
     return c;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qcompare_signal(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3315,7 +3315,7 @@ pub unsafe extern "C" fn mpd_qcompare_signal(
     );
     return c;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_cmp_total(
     mut a: *const mpd_t,
     mut b: *const mpd_t,
@@ -3384,7 +3384,7 @@ pub unsafe extern "C" fn mpd_cmp_total(
     }
     return c * mpd_arith_sign(a);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_compare_total(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3400,7 +3400,7 @@ pub unsafe extern "C" fn mpd_compare_total(
     );
     return c;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_cmp_total_mag(
     mut a: *const mpd_t,
     mut b: *const mpd_t,
@@ -3427,7 +3427,7 @@ pub unsafe extern "C" fn mpd_cmp_total_mag(
     mpd_set_positive(&raw mut bb);
     return mpd_cmp_total(&raw mut aa, &raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_compare_total_mag(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3464,7 +3464,7 @@ unsafe extern "C" fn _mpd_cmp_numequal(
     }
     return c;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qshiftl(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3572,7 +3572,7 @@ unsafe extern "C" fn mpd_qsshiftr(
     return rnd;
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsshiftr(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3614,7 +3614,7 @@ pub unsafe extern "C" fn mpd_qsshiftr(
     (*result).exp = (*a).exp;
     return rnd;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qshiftr_inplace(
     mut result: *mut mpd_t,
     mut n: mpd_ssize_t,
@@ -3656,7 +3656,7 @@ pub unsafe extern "C" fn mpd_qshiftr_inplace(
     }
     return rnd;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qshiftr(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3714,7 +3714,7 @@ pub unsafe extern "C" fn mpd_qshiftr(
     (*result).exp = (*a).exp;
     return rnd;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qand(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3867,7 +3867,7 @@ pub unsafe extern "C" fn mpd_qand(
     }
     mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_class(
     mut a: *const mpd_t,
     mut ctx: *const mpd_context_t,
@@ -3898,7 +3898,7 @@ pub unsafe extern "C" fn mpd_class(
         return b"-Subnormal\0" as *const u8 as *const ::core::ffi::c_char;
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qinvert(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3979,7 +3979,7 @@ pub unsafe extern "C" fn mpd_qinvert(
         }
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qlogb(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -3998,7 +3998,7 @@ pub unsafe extern "C" fn mpd_qlogb(
         mpd_qset_ssize(result, mpd_adjexp(a), ctx, status);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qor(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4156,7 +4156,7 @@ pub unsafe extern "C" fn mpd_qor(
     }
     mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrotate(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4263,7 +4263,7 @@ pub unsafe extern "C" fn mpd_qrotate(
     mpd_del(&raw mut small);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qscaleb(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4310,7 +4310,7 @@ pub unsafe extern "C" fn mpd_qscaleb(
     mpd_qfinalize(result, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qscaleb(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4356,7 +4356,7 @@ pub unsafe extern "C" fn mpd_qscaleb(
     (*result).exp = exp as mpd_ssize_t;
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qshiftn(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4384,7 +4384,7 @@ pub unsafe extern "C" fn mpd_qshiftn(
         mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qshift(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4427,7 +4427,7 @@ pub unsafe extern "C" fn mpd_qshift(
         mpd_qshiftr_inplace(result, -n);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qxor(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4585,7 +4585,7 @@ pub unsafe extern "C" fn mpd_qxor(
     }
     mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qabs(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -4997,7 +4997,7 @@ unsafe extern "C" fn _mpd_qsub(
         status,
     );
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5053,7 +5053,7 @@ unsafe extern "C" fn _mpd_qadd_exact(
         mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5122,7 +5122,7 @@ unsafe extern "C" fn _mpd_qsub_exact(
         mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_ssize(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5157,7 +5157,7 @@ pub unsafe extern "C" fn mpd_qadd_ssize(
     mpd_qadd(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_uint(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5192,7 +5192,7 @@ pub unsafe extern "C" fn mpd_qadd_uint(
     mpd_qadd(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_ssize(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5227,7 +5227,7 @@ pub unsafe extern "C" fn mpd_qsub_ssize(
     mpd_qsub(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_uint(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5262,7 +5262,7 @@ pub unsafe extern "C" fn mpd_qsub_uint(
     mpd_qsub(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_i32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5272,7 +5272,7 @@ pub unsafe extern "C" fn mpd_qadd_i32(
 ) {
     mpd_qadd_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_u32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5283,7 +5283,7 @@ pub unsafe extern "C" fn mpd_qadd_u32(
     mpd_qadd_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5294,7 +5294,7 @@ pub unsafe extern "C" fn mpd_qadd_i64(
     mpd_qadd_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5330,7 +5330,7 @@ pub unsafe extern "C" fn mpd_qadd_i64(
     mpd_del(&raw mut bb);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5341,7 +5341,7 @@ pub unsafe extern "C" fn mpd_qadd_u64(
     mpd_qadd_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qadd_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5376,7 +5376,7 @@ pub unsafe extern "C" fn mpd_qadd_u64(
     mpd_qadd(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_i32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5386,7 +5386,7 @@ pub unsafe extern "C" fn mpd_qsub_i32(
 ) {
     mpd_qsub_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_u32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5397,7 +5397,7 @@ pub unsafe extern "C" fn mpd_qsub_u32(
     mpd_qsub_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5408,7 +5408,7 @@ pub unsafe extern "C" fn mpd_qsub_i64(
     mpd_qsub_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5444,7 +5444,7 @@ pub unsafe extern "C" fn mpd_qsub_i64(
     mpd_del(&raw mut bb);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5455,7 +5455,7 @@ pub unsafe extern "C" fn mpd_qsub_u64(
     mpd_qsub_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsub_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -5901,7 +5901,7 @@ unsafe extern "C" fn _mpd_qdiv(
     mpd_del(&raw mut aligned);
     mpd_qfinalize(q, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv(
     mut q: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6445,7 +6445,7 @@ unsafe extern "C" fn _mpd_qdivmod(
     }
     mpd_del(&raw mut aligned);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdivmod(
     mut q: *mut mpd_t,
     mut r: *mut mpd_t,
@@ -6499,7 +6499,7 @@ pub unsafe extern "C" fn mpd_qdivmod(
     mpd_qfinalize(q, ctx, status);
     mpd_qfinalize(r, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdivint(
     mut q: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6551,7 +6551,7 @@ pub unsafe extern "C" fn mpd_qdivint(
     mpd_del(&raw mut r);
     mpd_qfinalize(q, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_ssize(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6586,7 +6586,7 @@ pub unsafe extern "C" fn mpd_qdiv_ssize(
     mpd_qdiv(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_uint(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6621,7 +6621,7 @@ pub unsafe extern "C" fn mpd_qdiv_uint(
     mpd_qdiv(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_i32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6631,7 +6631,7 @@ pub unsafe extern "C" fn mpd_qdiv_i32(
 ) {
     mpd_qdiv_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_u32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6642,7 +6642,7 @@ pub unsafe extern "C" fn mpd_qdiv_u32(
     mpd_qdiv_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6653,7 +6653,7 @@ pub unsafe extern "C" fn mpd_qdiv_i64(
     mpd_qdiv_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6689,7 +6689,7 @@ pub unsafe extern "C" fn mpd_qdiv_i64(
     mpd_del(&raw mut bb);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -6700,7 +6700,7 @@ pub unsafe extern "C" fn mpd_qdiv_u64(
     mpd_qdiv_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qdiv_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -7154,7 +7154,7 @@ pub const MPD_EXP_MAX_T: ::core::ffi::c_int = 19 as ::core::ffi::c_int;
 #[cfg(target_pointer_width = "32")]
 pub const MPD_EXP_MAX_T: ::core::ffi::c_int = 10 as ::core::ffi::c_int;
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qexp(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -7335,7 +7335,7 @@ pub unsafe extern "C" fn mpd_qexp(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qexp(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -7516,7 +7516,7 @@ pub unsafe extern "C" fn mpd_qexp(
         mpd_qfinalize(result, &raw mut workctx, status);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qfma(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -7730,7 +7730,7 @@ static mut _mpd_ln10: mpd_t = unsafe {
     }
 };
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qln10(
     mut result: *mut mpd_t,
     mut prec: mpd_ssize_t,
@@ -7846,7 +7846,7 @@ pub unsafe extern "C" fn mpd_qln10(
     mpd_qfinalize(result, &raw mut maxcontext, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qln10(
     mut result: *mut mpd_t,
     mut prec: mpd_ssize_t,
@@ -9292,7 +9292,7 @@ unsafe extern "C" fn _mpd_qln(
     return ret;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qln(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -9497,7 +9497,7 @@ pub unsafe extern "C" fn mpd_qln(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qln(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -9752,7 +9752,7 @@ unsafe extern "C" fn _mpd_qlog10(
     return ret;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qlog10(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -9974,7 +9974,7 @@ pub unsafe extern "C" fn mpd_qlog10(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qlog10(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -10196,7 +10196,7 @@ pub unsafe extern "C" fn mpd_qlog10(
         mpd_check_underflow(result, &raw mut workctx, status);
     };
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmax(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -10224,7 +10224,7 @@ pub unsafe extern "C" fn mpd_qmax(
     }
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmax_mag(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -10252,7 +10252,7 @@ pub unsafe extern "C" fn mpd_qmax_mag(
     }
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmin(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -10280,7 +10280,7 @@ pub unsafe extern "C" fn mpd_qmin(
     }
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmin_mag(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -10489,7 +10489,7 @@ unsafe extern "C" fn _mpd_kmul(
     return result;
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_kmul(
     mut u: *const mpd_uint_t,
     mut v: *const mpd_uint_t,
@@ -10747,7 +10747,7 @@ unsafe extern "C" fn _mpd_fntmul(
     return c1;
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_fntmul(
     mut u: *const mpd_uint_t,
     mut v: *const mpd_uint_t,
@@ -11251,7 +11251,7 @@ unsafe extern "C" fn _mpd_kmul_fnt(
 }
 #[cfg(feature = "test-hooks")]
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_kmul_fnt(
     mut u: *const mpd_uint_t,
     mut v: *const mpd_uint_t,
@@ -11345,7 +11345,7 @@ unsafe extern "C" fn _mpd_kmul_fnt(
 }
 #[cfg(feature = "test-hooks")]
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn _mpd_kmul_fnt(
     mut u: *const mpd_uint_t,
     mut v: *const mpd_uint_t,
@@ -11693,7 +11693,7 @@ unsafe extern "C" fn _mpd_qmul(
     mpd_qresize(result, (*result).len, status);
     mpd_setdigits(result);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11742,7 +11742,7 @@ unsafe extern "C" fn _mpd_qmul_exact(
         mpd_seterror(result, MPD_Invalid_operation as uint32_t, status);
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_ssize(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11777,7 +11777,7 @@ pub unsafe extern "C" fn mpd_qmul_ssize(
     mpd_qmul(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_uint(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11812,7 +11812,7 @@ pub unsafe extern "C" fn mpd_qmul_uint(
     mpd_qmul(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_i32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11822,7 +11822,7 @@ pub unsafe extern "C" fn mpd_qmul_i32(
 ) {
     mpd_qmul_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_u32(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11833,7 +11833,7 @@ pub unsafe extern "C" fn mpd_qmul_u32(
     mpd_qmul_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11844,7 +11844,7 @@ pub unsafe extern "C" fn mpd_qmul_i64(
     mpd_qmul_ssize(result, a, b as mpd_ssize_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_i64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11880,7 +11880,7 @@ pub unsafe extern "C" fn mpd_qmul_i64(
     mpd_del(&raw mut bb);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11891,7 +11891,7 @@ pub unsafe extern "C" fn mpd_qmul_u64(
     mpd_qmul_uint(result, a, b as mpd_uint_t, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qmul_u64(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11926,7 +11926,7 @@ pub unsafe extern "C" fn mpd_qmul_u64(
     mpd_qmul(result, a, &raw mut bb, ctx, status);
     mpd_del(&raw mut bb);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qminus(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11945,7 +11945,7 @@ pub unsafe extern "C" fn mpd_qminus(
     }
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qplus(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -11964,7 +11964,7 @@ pub unsafe extern "C" fn mpd_qplus(
     }
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qnext_minus(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -12040,7 +12040,7 @@ pub unsafe extern "C" fn mpd_qnext_minus(
         | (workctx.status & MPD_Errors as uint32_t) as ::core::ffi::c_uint)
         as uint32_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qnext_plus(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -12116,7 +12116,7 @@ pub unsafe extern "C" fn mpd_qnext_plus(
         | (workctx.status & MPD_Errors as uint32_t) as ::core::ffi::c_uint)
         as uint32_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qnext_toward(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -12826,7 +12826,7 @@ unsafe extern "C" fn _mpd_qpow_real(
         as uint32_t;
     *status = (*status as ::core::ffi::c_uint | (MPD_Inexact | MPD_Rounded)) as uint32_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qpow(
     mut result: *mut mpd_t,
     mut base: *const mpd_t,
@@ -12943,7 +12943,7 @@ unsafe extern "C" fn _mpd_qpowmod_uint(
         exp >>= 1 as ::core::ffi::c_int;
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qpowmod(
     mut result: *mut mpd_t,
     mut base: *const mpd_t,
@@ -13197,7 +13197,7 @@ pub unsafe extern "C" fn mpd_qpowmod(
     mpd_del(&raw mut tmod);
     mpd_del(&raw mut tmp);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qquantize(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13263,7 +13263,7 @@ pub unsafe extern "C" fn mpd_qquantize(
     *status |= workstatus;
     mpd_qfinalize(result, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qreduce(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13303,7 +13303,7 @@ pub unsafe extern "C" fn mpd_qreduce(
     mpd_qshiftr_inplace(result, shift);
     (*result).exp += shift;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrem(
     mut r: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13350,7 +13350,7 @@ pub unsafe extern "C" fn mpd_qrem(
     mpd_qfinalize(r, ctx, status);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrem_near(
     mut r: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13465,7 +13465,7 @@ pub unsafe extern "C" fn mpd_qrem_near(
     mpd_qfinalize(r, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrem_near(
     mut r: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13625,7 +13625,7 @@ unsafe extern "C" fn _mpd_qrescale(
         *status = (*status as ::core::ffi::c_uint | MPD_Subnormal) as uint32_t;
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrescale(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13639,7 +13639,7 @@ pub unsafe extern "C" fn mpd_qrescale(
     }
     _mpd_qrescale(result, a, exp, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qrescale_fmt(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13694,7 +13694,7 @@ unsafe extern "C" fn _mpd_qround_to_integral(
         }
     }
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qround_to_intx(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13703,7 +13703,7 @@ pub unsafe extern "C" fn mpd_qround_to_intx(
 ) {
     _mpd_qround_to_integral(TO_INT_EXACT as ::core::ffi::c_int, result, a, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qround_to_int(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13712,7 +13712,7 @@ pub unsafe extern "C" fn mpd_qround_to_int(
 ) {
     _mpd_qround_to_integral(TO_INT_SILENT as ::core::ffi::c_int, result, a, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qtrunc(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13725,7 +13725,7 @@ pub unsafe extern "C" fn mpd_qtrunc(
     }
     _mpd_qround_to_integral(TO_INT_TRUNC as ::core::ffi::c_int, result, a, ctx, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qfloor(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13757,7 +13757,7 @@ pub unsafe extern "C" fn mpd_qfloor(
         status,
     );
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qceil(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -13789,7 +13789,7 @@ pub unsafe extern "C" fn mpd_qceil(
         status,
     );
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_same_quantum(
     mut a: *const mpd_t,
     mut b: *const mpd_t,
@@ -15117,7 +15117,7 @@ unsafe extern "C" fn _mpd_qinvroot(
     *status = (*status as ::core::ffi::c_uint | (MPD_Rounded | MPD_Inexact)) as uint32_t;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qinvroot(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -15163,7 +15163,7 @@ pub unsafe extern "C" fn mpd_qinvroot(
     mpd_qfinalize(result, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qinvroot(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -15752,7 +15752,7 @@ unsafe extern "C" fn _mpd_qsqrt(
     maxcontext.round = MPD_ROUND_HALF_EVEN as ::core::ffi::c_int;
     mpd_qfinalize(result, &raw mut maxcontext, status);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qsqrt(
     mut result: *mut mpd_t,
     mut a: *const mpd_t,
@@ -15822,7 +15822,7 @@ pub unsafe extern "C" fn mpd_qsqrt(
 }
 #[cfg(not(feature = "test-hooks"))]
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t) -> size_t {
     let mut x: ::core::ffi::c_double = 0.;
     let mut digits: size_t = 0;
@@ -15853,7 +15853,7 @@ pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t)
 }
 #[cfg(feature = "test-hooks")]
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t) -> size_t {
     let mut x: ::core::ffi::c_double = 0.;
     let mut digits: size_t = 0;
@@ -15888,7 +15888,7 @@ pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t)
 }
 #[cfg(not(feature = "test-hooks"))]
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t) -> size_t {
     let mut x: ::core::ffi::c_double = 0.;
     let mut digits: size_t = 0;
@@ -15915,7 +15915,7 @@ pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t)
 }
 #[cfg(feature = "test-hooks")]
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sizeinbase(mut a: *const mpd_t, mut base: uint32_t) -> size_t {
     let mut x: ::core::ffi::c_double = 0.;
     let mut digits: size_t = 0;
@@ -16463,7 +16463,7 @@ unsafe extern "C" fn _coeff_from_smaller_base(
     }
     return n as size_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qexport_u16(
     mut rdata: *mut *mut uint16_t,
     mut rlen: size_t,
@@ -16560,7 +16560,7 @@ pub unsafe extern "C" fn mpd_qexport_u16(
     return n;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qexport_u32(
     mut rdata: *mut *mut uint32_t,
     mut rlen: size_t,
@@ -16660,7 +16660,7 @@ pub unsafe extern "C" fn mpd_qexport_u32(
     return n;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qexport_u32(
     mut rdata: *mut *mut uint32_t,
     mut rlen: size_t,
@@ -16772,7 +16772,7 @@ pub unsafe extern "C" fn mpd_qexport_u32(
     mpd_del(&raw mut tsrc);
     return n;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qimport_u16(
     mut result: *mut mpd_t,
     mut srcdata: *const uint16_t,
@@ -16822,7 +16822,7 @@ pub unsafe extern "C" fn mpd_qimport_u16(
     mpd_free.expect("non-null function pointer")(usrc as *mut ::core::ffi::c_void);
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qimport_u32(
     mut result: *mut mpd_t,
     mut srcdata: *const uint32_t,
@@ -16866,7 +16866,7 @@ pub unsafe extern "C" fn mpd_qimport_u32(
     mpd_qfinalize(result, ctx, status);
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qimport_u32(
     mut result: *mut mpd_t,
     mut srcdata: *const uint32_t,
@@ -17091,7 +17091,7 @@ unsafe extern "C" fn _set_uint128_coeff_exp(
     return 0 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_from_uint128_triple(
     mut result: *mut mpd_t,
     mut triple: *const mpd_uint128_triple_t,
@@ -17200,7 +17200,7 @@ pub unsafe extern "C" fn mpd_from_uint128_triple(
     };
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_from_uint128_triple(
     mut result: *mut mpd_t,
     mut triple: *const mpd_uint128_triple_t,
@@ -17722,7 +17722,7 @@ unsafe extern "C" fn _coeff_as_uint128(
     _get_coeff(hi, lo, &raw mut coeff);
     return ret;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_as_uint128_triple(mut a: *const mpd_t) -> mpd_uint128_triple_t {
     let mut triple: mpd_uint128_triple_t = mpd_uint128_triple_t {
         tag: MPD_TRIPLE_ERROR,
@@ -18134,7 +18134,7 @@ unsafe extern "C" fn mpd_qtest_newtondivint(
     mpd_qfinalize(q, ctx, status);
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qtest_newtonrem(
     mut r: *mut mpd_t,
     mut a: *const mpd_t,
@@ -18235,7 +18235,7 @@ unsafe extern "C" fn mpd_qtest_newtondivmod(
     mpd_qfinalize(r, ctx, status);
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_test_newtondiv(
     mut q: *mut mpd_t,
     mut a: *const mpd_t,
@@ -18247,7 +18247,7 @@ pub unsafe extern "C" fn mpd_test_newtondiv(
     mpd_addstatus_raise(ctx, status);
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_test_newtondivint(
     mut q: *mut mpd_t,
     mut a: *const mpd_t,
@@ -18259,7 +18259,7 @@ pub unsafe extern "C" fn mpd_test_newtondivint(
     mpd_addstatus_raise(ctx, status);
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_test_newtonrem(
     mut r: *mut mpd_t,
     mut a: *const mpd_t,
@@ -18271,7 +18271,7 @@ pub unsafe extern "C" fn mpd_test_newtonrem(
     mpd_addstatus_raise(ctx, status);
 }
 #[cfg(feature = "test-hooks")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_test_newtondivmod(
     mut q: *mut mpd_t,
     mut r: *mut mpd_t,

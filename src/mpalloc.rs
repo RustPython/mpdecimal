@@ -44,12 +44,12 @@ unsafe extern "C" fn mul_size_t_overflow(
     *overflow = hi as mpd_size_t;
     return lo as mpd_size_t;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut MPD_MINALLOC: mpd_ssize_t = MPD_MINALLOC_MIN as mpd_ssize_t;
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_mallocfunc: Option<unsafe extern "C" fn(size_t) -> *mut ::core::ffi::c_void> =
     unsafe { Some(malloc as unsafe extern "C" fn(size_t) -> *mut ::core::ffi::c_void) };
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_reallocfunc: Option<
     unsafe extern "C" fn(*mut ::core::ffi::c_void, size_t) -> *mut ::core::ffi::c_void,
 > = unsafe {
@@ -58,14 +58,14 @@ pub static mut mpd_reallocfunc: Option<
             as unsafe extern "C" fn(*mut ::core::ffi::c_void, size_t) -> *mut ::core::ffi::c_void,
     )
 };
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_callocfunc: Option<
     unsafe extern "C" fn(size_t, size_t) -> *mut ::core::ffi::c_void,
 > = unsafe { Some(calloc as unsafe extern "C" fn(size_t, size_t) -> *mut ::core::ffi::c_void) };
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub static mut mpd_free: Option<unsafe extern "C" fn(*mut ::core::ffi::c_void) -> ()> =
     unsafe { Some(free as unsafe extern "C" fn(*mut ::core::ffi::c_void) -> ()) };
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_callocfunc_em(
     mut nmemb: size_t,
     mut size: size_t,
@@ -84,7 +84,7 @@ pub unsafe extern "C" fn mpd_callocfunc_em(
     memset(ptr, 0 as ::core::ffi::c_int, req);
     return ptr;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_alloc(
     mut nmemb: mpd_size_t,
     mut size: mpd_size_t,
@@ -97,7 +97,7 @@ pub unsafe extern "C" fn mpd_alloc(
     }
     return mpd_mallocfunc.expect("non-null function pointer")(req as size_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_calloc(
     mut nmemb: mpd_size_t,
     mut size: mpd_size_t,
@@ -109,7 +109,7 @@ pub unsafe extern "C" fn mpd_calloc(
     }
     return mpd_callocfunc.expect("non-null function pointer")(nmemb as size_t, size as size_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_realloc(
     mut ptr: *mut ::core::ffi::c_void,
     mut nmemb: mpd_size_t,
@@ -131,7 +131,7 @@ pub unsafe extern "C" fn mpd_realloc(
     }
     return new;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_sh_alloc(
     mut struct_size: mpd_size_t,
     mut nmemb: mpd_size_t,
@@ -149,7 +149,7 @@ pub unsafe extern "C" fn mpd_sh_alloc(
     }
     return mpd_mallocfunc.expect("non-null function pointer")(req as size_t);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qnew_size(mut nwords: mpd_ssize_t) -> *mut mpd_t {
     let mut result: *mut mpd_t = ::core::ptr::null_mut::<mpd_t>();
     nwords = if nwords < MPD_MINALLOC {
@@ -179,11 +179,11 @@ pub unsafe extern "C" fn mpd_qnew_size(mut nwords: mpd_ssize_t) -> *mut mpd_t {
     (*result).alloc = nwords;
     return result;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_qnew() -> *mut mpd_t {
     return mpd_qnew_size(MPD_MINALLOC);
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_new(mut ctx: *mut mpd_context_t) -> *mut mpd_t {
     let mut result: *mut mpd_t = ::core::ptr::null_mut::<mpd_t>();
     result = mpd_qnew();
@@ -193,7 +193,7 @@ pub unsafe extern "C" fn mpd_new(mut ctx: *mut mpd_context_t) -> *mut mpd_t {
     return result;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_switch_to_dyn(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -231,7 +231,7 @@ pub unsafe extern "C" fn mpd_switch_to_dyn(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_switch_to_dyn(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -267,7 +267,7 @@ pub unsafe extern "C" fn mpd_switch_to_dyn(
     mpd_set_dynamic_data(result);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_switch_to_dyn_zero(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -292,7 +292,7 @@ pub unsafe extern "C" fn mpd_switch_to_dyn_zero(
     mpd_set_dynamic_data(result);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_realloc_dyn(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -319,7 +319,7 @@ pub unsafe extern "C" fn mpd_realloc_dyn(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "64")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_switch_to_dyn_cxx(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -349,7 +349,7 @@ pub unsafe extern "C" fn mpd_switch_to_dyn_cxx(
     return 1 as ::core::ffi::c_int;
 }
 #[cfg(target_pointer_width = "32")]
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_switch_to_dyn_cxx(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
@@ -377,7 +377,7 @@ pub unsafe extern "C" fn mpd_switch_to_dyn_cxx(
     mpd_set_dynamic_data(result);
     return 1 as ::core::ffi::c_int;
 }
-#[no_mangle]
+#[cfg_attr(feature = "capi", no_mangle)]
 pub unsafe extern "C" fn mpd_realloc_dyn_cxx(
     mut result: *mut mpd_t,
     mut nwords: mpd_ssize_t,
