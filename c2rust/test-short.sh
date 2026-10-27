@@ -36,7 +36,7 @@ label=${1:?usage: c2rust/test-short.sh LABEL}
 work=$here/work/$label
 if [ "$CRATE" = root ]; then
     crate=$root
-    staticlib=libmpdecimal.a
+    staticlib=libmpdecimal_core.a
 else
     crate=$here/out/$CRATE/mpdec
     staticlib=libmpdec.a

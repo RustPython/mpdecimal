@@ -92,7 +92,7 @@ esac
 # the crate
 if [ "$CRATE" = root ]; then
     crate=$root
-    staticlib=libmpdecimal.a
+    staticlib=libmpdecimal_core.a
     features="--features test-hooks"
 else
     crate=$here/out/$CRATE/mpdec

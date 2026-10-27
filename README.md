@@ -12,8 +12,8 @@ The crate exports the C ABI of libmpdec (`staticlib`, `rlib`).
 ## Layout
 
 - `Cargo.toml`, `src/`: the translated crate, written by
-  `c2rust/install.py`. Do not edit by hand. Regenerate with
-  `c2rust/transpile-all.sh`.
+  `c2rust/install.py` and edited by hand since, so `install.py` no longer
+  overwrites them.
 - `c2rust/`: the translation pipeline, its run log (`c2rust/RUNS.md`) and the
   test scripts. See [c2rust/README.md](c2rust/README.md).
 - `libmpdec/`, `configure.ac`: the C sources and header configuration of

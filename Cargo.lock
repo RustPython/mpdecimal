@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "mpdecimal"
+name = "mpdecimal-core"
 version = "0.0.0"

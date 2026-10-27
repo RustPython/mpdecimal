@@ -1,5 +1,5 @@
 [package]
-name = "mpdecimal"
+name = "mpdecimal-core"
 version = "0.0.0"
 edition = "2021"
 publish = false
