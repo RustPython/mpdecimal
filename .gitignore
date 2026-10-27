@@ -8,3 +8,6 @@
 /c2rust/out/*/mpdec/Cargo.lock
 # Root crate (c2rust/install.py)
 /target/
+# Python bytecode
+__pycache__/
+*.pyc
